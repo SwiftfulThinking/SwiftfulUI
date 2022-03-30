@@ -15,7 +15,7 @@ public struct AsyncLetViewBuilder<Content: View, A, B>: View {
         /// No value is loaded.
         case loading
         /// A value successfully loaded.
-        case success(valueA: A?, valueB: B?)
+        case success(valueA: A, valueB: B)
         /// A value failed to load with an error.
         case failure(error: Error?)
         
@@ -33,15 +33,15 @@ public struct AsyncLetViewBuilder<Content: View, A, B>: View {
     @State private var phase: AsyncLetLoadingPhase = .loading
     let redactedStyle: RedactedStyle
     let priority: TaskPriority
-    let fetchA: () async throws -> A?
-    let fetchB: () async throws -> B?
+    let fetchA: () async throws -> A
+    let fetchB: () async throws -> B
     let content: (AsyncLetLoadingPhase) -> Content
     
     public init(
         redactedStyle: RedactedStyle = .none,
         priority: TaskPriority = .userInitiated,
-        fetchA: @escaping () async throws -> A?,
-        fetchB: @escaping () async throws -> B?,
+        fetchA: @escaping () async throws -> A,
+        fetchB: @escaping () async throws -> B,
         @ViewBuilder content: @escaping (AsyncLetLoadingPhase) -> Content) {
             self.redactedStyle = redactedStyle
             self.priority = priority
@@ -77,8 +77,8 @@ public struct AsyncLetViewBuilder<Content: View, A, B>: View {
         switch phase {
         case .loading, .failure:
             break
-        case .success(valueA: let a, valueB: let b):
-            guard a == nil || b == nil else { return }
+        case .success:
+            return
         }
         
         do {
