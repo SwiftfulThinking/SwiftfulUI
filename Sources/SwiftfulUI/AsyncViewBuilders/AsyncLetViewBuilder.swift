@@ -32,16 +32,19 @@ public struct AsyncLetViewBuilder<Content: View, A, B>: View {
     @State private var task: Task<Void, Never>? = nil
     @State private var phase: AsyncLetLoadingPhase = .loading
     let redactedStyle: RedactedStyle
+    let priority: TaskPriority
     let fetchA: () async throws -> A?
     let fetchB: () async throws -> B?
     let content: (AsyncLetLoadingPhase) -> Content
     
     public init(
         redactedStyle: RedactedStyle = .none,
+        priority: TaskPriority = .userInitiated,
         fetchA: @escaping () async throws -> A?,
         fetchB: @escaping () async throws -> B?,
         @ViewBuilder content: @escaping (AsyncLetLoadingPhase) -> Content) {
             self.redactedStyle = redactedStyle
+            self.priority = priority
             self.fetchA = fetchA
             self.fetchB = fetchB
             self.content = content
@@ -51,14 +54,14 @@ public struct AsyncLetViewBuilder<Content: View, A, B>: View {
         if #available(iOS 15.0, *) {
             content(phase)
                 .redacted(if: phase.shouldBeRedacted, style: redactedStyle)
-                .task {
+                .task(priority: priority) {
                     await performFetchRequestIfNeeded()
                 }
         } else {
             content(phase)
                 .redacted(if: phase.shouldBeRedacted, style: redactedStyle)
                 .onAppear {
-                    task = Task {
+                    task = Task(priority: priority) {
                         await performFetchRequestIfNeeded()
                     }
                 }
