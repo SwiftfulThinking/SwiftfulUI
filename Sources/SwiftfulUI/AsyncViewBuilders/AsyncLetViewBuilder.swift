@@ -11,7 +11,7 @@ import SwiftUI
 @available(iOS 14, *)
 public struct AsyncLetViewBuilder<Content: View, A, B>: View {
     
-    enum AsyncLetLoadingPhase {
+    public enum AsyncLetLoadingPhase {
         /// No value is loaded.
         case loading
         /// A value successfully loaded.
@@ -36,7 +36,7 @@ public struct AsyncLetViewBuilder<Content: View, A, B>: View {
     let fetchB: () async throws -> B?
     let content: (AsyncLetLoadingPhase) -> Content
     
-    init(
+    public init(
         redactedStyle: RedactedStyle = .none,
         fetchA: @escaping () async throws -> A?,
         fetchB: @escaping () async throws -> B?,

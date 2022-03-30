@@ -10,7 +10,7 @@ import SwiftUI
 @available(iOS 14, *)
 public struct AsyncViewBuilder<Content: View, T>: View {
     
-    enum AsyncLoadingPhase {
+    public enum AsyncLoadingPhase {
         /// No value is loaded.
         case loading
         /// A value successfully loaded.
@@ -34,7 +34,7 @@ public struct AsyncViewBuilder<Content: View, T>: View {
     let fetch: () async throws -> T
     let content: (AsyncLoadingPhase) -> Content
     
-    init(
+    public init(
         redactedStyle: RedactedStyle = .none,
         fetch: @escaping () async throws -> T,
         @ViewBuilder content: @escaping (AsyncLoadingPhase) -> Content) {
