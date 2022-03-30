@@ -13,7 +13,8 @@ struct RedactedViewModifier: ViewModifier {
     
     let isRedacted: Bool
     let style: RedactedStyle
-    
+    @State private var showContent: Bool = false
+
     @ViewBuilder func body(content: Content) -> some View {
         switch style {
         case .placeholder:
@@ -21,8 +22,11 @@ struct RedactedViewModifier: ViewModifier {
                 .redacted(reason: isRedacted ? .placeholder : [])
         case .opacity:
             content
-                .opacity(isRedacted ? 0 : 1)
-                .animation(.easeInOut, value: isRedacted)
+                .opacity(showContent ? 1 : 0)
+                .animation(.easeInOut, value: showContent)
+                .onChange(of: isRedacted) { newValue in
+                    showContent = !newValue
+                }
         case .appear:
             content
                 .opacity(isRedacted ? 0 : 1)

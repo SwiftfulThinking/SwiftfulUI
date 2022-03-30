@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(iOS 14, *)
-public struct AsyncViewBuilder<Content: View, T>: View {
+struct AsyncViewBuilder<Content: View, T>: View {
     
     public enum AsyncLoadingPhase {
         /// No value is loaded.
