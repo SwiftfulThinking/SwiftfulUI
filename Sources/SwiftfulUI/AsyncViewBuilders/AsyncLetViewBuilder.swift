@@ -8,6 +8,9 @@
 import Foundation
 import SwiftUI
 
+/// Load any View from two asynchronous methods concurrently.
+///
+/// The fetch requests are called every time the view appears, unless data has already been successfully loaded. The Tasks are cancelled when the view disappears.
 @available(iOS 14, *)
 public struct AsyncLetViewBuilder<Content: View, A, B>: View {
     

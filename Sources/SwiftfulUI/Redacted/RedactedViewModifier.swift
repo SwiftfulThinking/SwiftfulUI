@@ -32,6 +32,7 @@ struct RedactedViewModifier: ViewModifier {
                 .opacity(isRedacted ? 0 : 1)
         case .none:
             content
+                
         }
     }
     
@@ -47,6 +48,12 @@ public enum RedactedStyle {
 @available(iOS 14, *)
 public extension View {
     
+    /// Redact any View based on a Boolean value.
+    ///
+    /// ```
+    /// Image(uiImage: image)
+    ///      .redacted(if: image == nil, style: .placeholder)
+    /// ```
     func redacted(if isRedacted: Bool, style: RedactedStyle) -> some View {
         modifier(RedactedViewModifier(isRedacted: isRedacted, style: style))
     }
