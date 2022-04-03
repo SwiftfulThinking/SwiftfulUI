@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// Load any View from an asynchronous method.
+///
+/// The fetch request is called every time the view appears, unless data has already been successfully loaded. The Task is cancelled when the view disappears.
 @available(iOS 14, *)
 public struct AsyncViewBuilder<Content: View, T>: View {
     
@@ -125,3 +128,4 @@ public struct AsyncViewBuilder<Content: View, T>: View {
 //    }
 //    
 //}
+
