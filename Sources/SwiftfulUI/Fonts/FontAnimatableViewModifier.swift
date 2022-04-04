@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FontAnimateableViewModifier: ViewModifier {
+struct FontAnimatableViewModifier: ViewModifier {
     
     let font: Font
     let color: Color
@@ -27,8 +27,8 @@ struct FontAnimateableViewModifier: ViewModifier {
 public extension View {
     
     /// Convenience method for adding font-related modifiers that supports animating text color.
-    func withFontAnimateable(font: Font, color: Color, lineLimit: Int? = nil, minimumScaleFactor: CGFloat = 1) -> some View {
-        modifier(FontAnimateableViewModifier(font: font, color: color, lineLimit: lineLimit, minimumScaleFactor: minimumScaleFactor))
+    func withFontAnimatable(font: Font, color: Color, lineLimit: Int? = nil, minimumScaleFactor: CGFloat = 1) -> some View {
+        modifier(FontAnimatableViewModifier(font: font, color: color, lineLimit: lineLimit, minimumScaleFactor: minimumScaleFactor))
     }
     
 }
@@ -39,7 +39,7 @@ struct FontAnimateableViewModifier_Previews: PreviewProvider {
         @State private var isActive: Bool = false
         var body: some View {
             Text("Animate color on tap!")
-                .withFontAnimateable(font: .headline, color: isActive ? Color.red : .blue)
+                .withFontAnimatable(font: .headline, color: isActive ? Color.red : .blue)
                 .onTapGesture {
                     withAnimation {
                         isActive.toggle()
