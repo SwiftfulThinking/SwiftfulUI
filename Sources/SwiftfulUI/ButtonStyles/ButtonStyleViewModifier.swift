@@ -29,7 +29,7 @@ struct ButtonStyleViewModifier: ButtonStyle {
 
 }
 
-extension View {
+public extension View {
     
     /// Wrap a View in a Button and add a custom ButtonStyle.
     func asPressableButton(
