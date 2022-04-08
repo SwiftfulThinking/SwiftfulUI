@@ -39,7 +39,7 @@ struct BackgroundBorderAndLinearGradientFillViewModifier: ViewModifier {
 public extension View {
     
     /// Add a linear gradient border and animate as the background if needed.
-    func withBackgroundAndBorder_LinearGradient(
+    func withGradientBorder(
         isActive: Bool = false,
         borderGradient: LinearGradient,
         borderWidth: CGFloat,
@@ -47,6 +47,8 @@ public extension View {
         cornerRadius: CGFloat = 0) -> some View {
         modifier(BackgroundBorderAndLinearGradientFillViewModifier(isActive: isActive, borderGradient: borderGradient, borderWidth: borderWidth, backgroundColor: backgroundColor, cornerRadius: cornerRadius))
     }
+    
+    
         
 }
 
@@ -56,10 +58,11 @@ struct BackgroundBorderAndLinearGradientFillViewModifier_Previews: PreviewProvid
         @State private var isActive: Bool = false
         var body: some View {
             Text("Hello, world")
-                .frame(width: 100, height: 100)
-                .withBackgroundAndBorder_LinearGradient(
+                .padding(.horizontal)
+                .padding(.all)
+                .withGradientBorder(
                     isActive: isActive,
-                    borderGradient: LinearGradient(colors: [Color.red, .blue], startPoint: .leading, endPoint: .trailing), borderWidth: 10, cornerRadius: 15)
+                    borderGradient: LinearGradient(colors: [Color.blue.opacity(0.3), .blue], startPoint: .topLeading, endPoint: .trailing), borderWidth: 2, cornerRadius: 15)
                 .onTapGesture {
                     withAnimation {
                         isActive.toggle()
