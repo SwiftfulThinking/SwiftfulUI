@@ -32,19 +32,34 @@ struct ButtonStyleViewModifier: ButtonStyle {
 public extension View {
     
     /// Wrap a View in a Button and add a custom ButtonStyle.
-    func asPressableButton(
-        scale: CGFloat = 0.95,
-        opacity: Double = 1,
-        brightness: Double = 0,
-        action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+    func asButton(scale: CGFloat = 0.95, opacity: Double = 1, brightness: Double = 0, action: @escaping () -> Void) -> some View {
+            Button(action: action) {
+                self
+            }
+            .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
+        }
+    
+}
+
+@available(iOS 14, *)
+public extension View {
+    
+    /// Wrap a View in a Link and add a custom ButtonStyle.
+    @ViewBuilder
+    func asWebLink(scale: CGFloat = 0.95, opacity: Double = 1, brightness: Double = 0, url: @escaping () -> URL?) -> some View {
+        if let url = url() {
+            Link(destination: url) {
+                self
+            }
+            .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
+        } else {
             self
         }
-        .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
     }
     
 }
 
+@available(iOS 14, *)
 struct ButtonStyleViewModifier_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
@@ -54,8 +69,17 @@ struct ButtonStyleViewModifier_Previews: PreviewProvider {
                 .padding(.horizontal)
                 .background(Color.blue)
                 .cornerRadius(10)
-                .asPressableButton {
+                .asButton {
                     
+                }
+            
+            Text("Hello")
+                .withFont(font: .headline, color: .white)
+                .padding()
+                .padding(.horizontal)
+                .withBackground(color: .red, cornerRadius: 10)
+                .asWebLink {
+                    URL(string: "https://www.google.com")
                 }
         }
     }
