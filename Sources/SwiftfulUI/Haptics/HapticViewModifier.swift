@@ -11,7 +11,7 @@ import SwiftUI
 @available(iOS 14, *)
 struct HapticViewModifier<Value : Equatable>: ViewModifier {
     
-    let option: Haptics.HapticOption
+    let option: HapticOption
     let value: Value?
     
     func body(content: Content) -> some View {
@@ -32,7 +32,7 @@ public extension View {
     /// Add Haptic support to a View.
     ///
     /// A vibration will occur every onChangeOf the parameter. The generator will be automatically prepared when the view Appears.
-    func withHaptic<Value: Equatable>(option: Haptics.HapticOption = .selection, onChangeOf value: Value?) -> some View {
+    func withHaptic<Value: Equatable>(option: HapticOption = .selection, onChangeOf value: Value?) -> some View {
         modifier(HapticViewModifier(option: option, value: value))
     }
     

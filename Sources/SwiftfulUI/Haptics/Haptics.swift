@@ -18,17 +18,6 @@ final class Haptics {
     let mediumGenerator = UIImpactFeedbackGenerator(style: .medium)
     let heavyGenerator = UIImpactFeedbackGenerator(style: .heavy)
     let selectionGenerator = UISelectionFeedbackGenerator()
-
-    enum HapticOption: String, CaseIterable {
-        case light
-        case medium
-        case heavy
-        case success
-        case error
-        case warning
-        case none
-        case selection
-    }
     
     /// Prepare the appropriate haptic generator prior to haptic occurrence.
     ///
