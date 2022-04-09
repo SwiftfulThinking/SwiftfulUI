@@ -25,7 +25,7 @@ struct FrameReader: View {
 
 
 @available(iOS 14, *)
-struct SwiftUIView_Previews: PreviewProvider {
+struct FrameReader_Previews: PreviewProvider {
     
     struct PreviewView: View {
         
