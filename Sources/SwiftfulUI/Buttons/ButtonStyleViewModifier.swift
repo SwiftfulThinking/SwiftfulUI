@@ -33,11 +33,11 @@ public extension View {
     
     /// Wrap a View in a Button and add a custom ButtonStyle.
     func asButton(scale: CGFloat = 0.95, opacity: Double = 1, brightness: Double = 0, action: @escaping () -> Void) -> some View {
-            Button(action: action) {
-                self
-            }
-            .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
+        Button(action: action) {
+            self
         }
+        .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
+    }
     
 }
 
