@@ -7,6 +7,39 @@
 
 import SwiftUI
 
+
+/// Customizable TabBar
+///
+///  ```swift
+///  // 'Default' style
+///  TabBarDefaultView(
+///     selection: $selection,
+///     tabs: tabs,
+///     accentColor: .blue,
+///     defaultColor: .gray,
+///     backgroundColor: .white,
+///     font: .caption,
+///     iconSize: 20,
+///     spacing: 6,
+///     insetPadding: 10,
+///     outerPadding: 0,
+///     cornerRadius: 0)
+///
+///  // 'Floating' style
+///  TabBarDefaultView(
+///     selection: $selection,
+///     tabs: tabs,
+///     accentColor: .blue,
+///     defaultColor: .gray,
+///     backgroundColor: .white,
+///     font: .caption,
+///     iconSize: 20,
+///     spacing: 6,
+///     insetPadding: 12,
+///     outerPadding: 12,
+///     cornerRadius: 30,
+///     shadowRadius: 8)
+///  ```
 public struct TabBarDefaultView: View {
     
     @Binding var selection: TabBarItem

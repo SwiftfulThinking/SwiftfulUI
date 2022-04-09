@@ -39,6 +39,7 @@ struct TabBarItemViewModifer: ViewModifier {
 
 public extension View {
     
+    /// Tag a View with a value. Use selection to determine which tab is currently displaying.
     func tabBarItem(tab: AnyHashable, selection: AnyHashable) -> some View {
         modifier(TabBarItemViewModifer(tab: tab, selection: selection))
     }
