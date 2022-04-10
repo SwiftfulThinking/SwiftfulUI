@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(iOS 14, *)
-struct FrameReader: View {
+struct LocationReader: View {
     
     let coordinateSpace: CoordinateSpace
     let onChange: (_ frame: CGRect) -> Void
@@ -33,7 +33,7 @@ struct FrameReader_Previews: PreviewProvider {
         
         var body: some View {
             ScrollView(.vertical) {
-                FrameReader(coordinateSpace: .named("test")) { frame in
+                LocationReader(coordinateSpace: .named("test")) { frame in
                     yOffset = frame.minY
                 }
 

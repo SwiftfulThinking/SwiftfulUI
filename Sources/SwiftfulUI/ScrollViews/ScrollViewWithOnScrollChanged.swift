@@ -29,7 +29,7 @@ public struct ScrollViewWithOnScrollChanged<Content:View>: View {
     
     public var body: some View {
         ScrollView(axes, showsIndicators: showsIndicators) {
-            FrameReader(coordinateSpace: .named(coordinateSpaceID), onChange: onScrollChanged)
+            LocationReader(coordinateSpace: .named(coordinateSpaceID), onChange: onScrollChanged)
             content
         }
         .coordinateSpace(name: coordinateSpaceID)
