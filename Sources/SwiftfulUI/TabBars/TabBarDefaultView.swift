@@ -158,6 +158,19 @@ private extension TabBarDefaultView {
         .foregroundColor(selection == tab ? accentColor : defaultColor)
         .frame(maxWidth: .infinity)
         .padding(.vertical, insetPadding)
+        .overlay(
+            ZStack {
+                if let count = tab.badgeCount, count > 0 {
+                    Text("\(count)")
+                        .foregroundColor(.white)
+                        .font(.caption)
+                        .padding(6)
+                        .background(accentColor)
+                        .clipShape(Circle())
+                        .offset(x: iconSize * 0.9, y: -iconSize * 0.9)
+                }
+            }
+        )
     }
     
 }
