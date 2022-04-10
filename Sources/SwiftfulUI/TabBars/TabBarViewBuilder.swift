@@ -80,7 +80,7 @@ struct TabBarViewBuilder_Previews: PreviewProvider {
                     .tabBarItem(tab: tabs[1], selection: selection)
                     .edgesIgnoringSafeArea(.all)
             } tabBar: {
-                TabBarDefaultView(selection: $selection, tabs: tabs)
+                TabBarDefaultView(tabs: tabs, selection: $selection)
             }
         }
     }
