@@ -42,8 +42,8 @@ import SwiftUI
 ///  ```
 public struct TabBarDefaultView: View {
     
-    @Binding var selection: TabBarItem
     let tabs: [TabBarItem]
+    @Binding var selection: TabBarItem
     let accentColor: Color
     let defaultColor: Color
     let backgroundColor: Color?
@@ -56,8 +56,8 @@ public struct TabBarDefaultView: View {
     let shadowRadius: CGFloat
     
     public init(
-        selection: Binding<TabBarItem>,
         tabs: [TabBarItem],
+        selection: Binding<TabBarItem>,
         accentColor: Color = .blue,
         defaultColor: Color = .gray,
         backgroundColor: Color? = nil,
