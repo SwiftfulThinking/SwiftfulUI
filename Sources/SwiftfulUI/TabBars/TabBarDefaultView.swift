@@ -13,8 +13,8 @@ import SwiftUI
 ///  ```swift
 ///  // 'Default' style
 ///  TabBarDefaultView(
-///     selection: $selection,
 ///     tabs: tabs,
+///     selection: $selection,
 ///     accentColor: .blue,
 ///     defaultColor: .gray,
 ///     backgroundColor: .white,
@@ -27,8 +27,8 @@ import SwiftUI
 ///
 ///  // 'Floating' style
 ///  TabBarDefaultView(
-///     selection: $selection,
 ///     tabs: tabs,
+///     selection: $selection,
 ///     accentColor: .blue,
 ///     defaultColor: .gray,
 ///     backgroundColor: .white,
