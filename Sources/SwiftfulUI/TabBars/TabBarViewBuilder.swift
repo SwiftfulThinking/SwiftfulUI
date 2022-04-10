@@ -59,9 +59,9 @@ struct TabBarViewBuilder_Previews: PreviewProvider {
     struct PreviewView: View {
         @State var selection: TabBarItem = TabBarItem(title: "Home", iconName: "heart.fill")
         @State private var tabs: [TabBarItem] = [
-            TabBarItem(title: "Home", iconName: "heart.fill"),
+            TabBarItem(title: "Home", iconName: "heart.fill", badgeCount: 2),
             TabBarItem(title: "Browse", iconName: "magnifyingglass"),
-            TabBarItem(title: "Discover", iconName: "globe"),
+            TabBarItem(title: "Discover", iconName: "globe", badgeCount: 100),
             TabBarItem(title: "Profile", iconName: "person.fill")
         ]
         
@@ -74,6 +74,9 @@ struct TabBarViewBuilder_Previews: PreviewProvider {
                 
                 RoundedRectangle(cornerRadius: 0)
                     .fill(Color.red)
+                    .onAppear {
+                        tabs[0].updateBadgeCount(to: 0)
+                    }
                     .tabBarItem(tab: tabs[1], selection: selection)
                     .edgesIgnoringSafeArea(.all)
             } tabBar: {
