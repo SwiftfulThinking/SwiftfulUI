@@ -11,12 +11,12 @@ import SwiftUI
 /// Adds a transparent View and read it's frame.
 ///
 /// Adds a GeometryReader with infinity frame.
-struct FrameReader: View {
+public struct FrameReader: View {
     
     let coordinateSpace: CoordinateSpace
     let onChange: (_ frame: CGRect) -> Void
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { geo in
             Text("")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
