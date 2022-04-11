@@ -15,6 +15,11 @@ public struct FrameReader: View {
     
     let coordinateSpace: CoordinateSpace
     let onChange: (_ frame: CGRect) -> Void
+    
+    public init(coordinateSpace: CoordinateSpace, onChange: @escaping (_ frame: CGRect) -> Void) {
+        self.coordinateSpace = coordinateSpace
+        self.onChange = onChange
+    }
 
     public var body: some View {
         GeometryReader { geo in

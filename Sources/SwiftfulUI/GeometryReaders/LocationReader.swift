@@ -16,6 +16,11 @@ public struct LocationReader: View {
     let coordinateSpace: CoordinateSpace
     let onChange: (_ location: CGPoint) -> Void
 
+    public init(coordinateSpace: CoordinateSpace, onChange: @escaping (_ location: CGPoint) -> Void) {
+        self.coordinateSpace = coordinateSpace
+        self.onChange = onChange
+    }
+    
     public var body: some View {
         FrameReader(coordinateSpace: coordinateSpace) { frame in
             onChange(CGPoint(x: frame.midX, y: frame.midY))
@@ -46,7 +51,7 @@ struct LocationReader_Previews: PreviewProvider {
         var body: some View {
             ScrollView(.vertical) {
                 VStack {
-                    Text("")
+                    Text("Hello, world!")
                         .frame(maxWidth: .infinity)
                         .frame(height: 200)
                         .cornerRadius(10)
