@@ -20,31 +20,25 @@ public struct AsyncViewBuilder<Content: View, T>: View {
         case success(value: T)
         /// A value failed to load with an error.
         case failure(error: Error?)
-        
-        var shouldBeRedacted: Bool {
-            switch self {
-            case .loading:
-                return true
-            default:
-                return false
-            }
-        }
     }
     
     @State private var task: Task<Void, Never>? = nil
     @State private var phase: AsyncLoadingPhase = .loading
-    let redactedStyle: RedactedStyle
     let priority: TaskPriority
+    let redactedStyle: RedactedStyle
+    let redactedOnFailure: Bool
     let fetch: () async throws -> T
     let content: (AsyncLoadingPhase) -> Content
     
     public init(
-        redactedStyle: RedactedStyle = .none,
         priority: TaskPriority = .userInitiated,
+        redactedStyle: RedactedStyle = .never,
+        redactedOnFailure: Bool = false,
         fetch: @escaping () async throws -> T,
         @ViewBuilder content: @escaping (AsyncLoadingPhase) -> Content) {
-            self.redactedStyle = redactedStyle
             self.priority = priority
+            self.redactedStyle = redactedStyle
+            self.redactedOnFailure = redactedOnFailure
             self.fetch = fetch
             self.content = content
         }
@@ -52,13 +46,13 @@ public struct AsyncViewBuilder<Content: View, T>: View {
     public var body: some View {
         if #available(iOS 15.0, *) {
             content(phase)
-                .redacted(if: phase.shouldBeRedacted, style: redactedStyle)
+                .redacted(if: shouldBeRedacted, style: redactedStyle)
                 .task(priority: priority) {
                     await performFetchRequestIfNeeded()
                 }
         } else {
             content(phase)
-                .redacted(if: phase.shouldBeRedacted, style: redactedStyle)
+                .redacted(if: shouldBeRedacted, style: redactedStyle)
                 .onAppear {
                     task = Task(priority: priority) {
                         await performFetchRequestIfNeeded()
@@ -84,6 +78,14 @@ public struct AsyncViewBuilder<Content: View, T>: View {
             phase = .success(value: try await fetch())
         } catch {
             phase = .failure(error: error)
+        }
+    }
+    
+    private var shouldBeRedacted: Bool {
+        switch phase {
+        case .loading: return true
+        case .success: return false
+        case .failure: return redactedOnFailure
         }
     }
 }

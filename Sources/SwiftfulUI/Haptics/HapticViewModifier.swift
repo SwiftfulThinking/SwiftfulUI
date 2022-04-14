@@ -14,14 +14,18 @@ struct HapticViewModifier<Value : Equatable>: ViewModifier {
     let option: HapticOption
     let value: Value?
     
-    func body(content: Content) -> some View {
-        content
-            .onAppear(perform: {
-                Haptics.shared.prepare(option: option)
-            })
-            .onChange(of: value, perform: { _ in
-                Haptics.shared.vibrate(option: option)
-            })
+    @ViewBuilder func body(content: Content) -> some View {
+        if option == .never {
+            content
+        } else {
+            content
+                .onAppear(perform: {
+                    Haptics.shared.prepare(option: option)
+                })
+                .onChange(of: value, perform: { _ in
+                    Haptics.shared.vibrate(option: option)
+                })
+        }
     }
     
 }

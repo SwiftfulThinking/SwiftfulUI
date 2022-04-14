@@ -30,9 +30,8 @@ struct RedactedViewModifier: ViewModifier {
         case .appear:
             content
                 .opacity(isRedacted ? 0 : 1)
-        case .none:
+        case .never:
             content
-                
         }
     }
     
@@ -42,7 +41,7 @@ public enum RedactedStyle {
     case placeholder
     case opacity
     case appear
-    case none
+    case never
 }
 
 @available(iOS 14, *)
