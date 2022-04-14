@@ -9,30 +9,30 @@ import SwiftUI
 
 @available(iOS 14, *)
 /// Customizable Toggle.
-struct CustomToggle: View {
+public struct CustomToggle: View {
     
     @Binding var isOn: Bool
     let width: CGFloat
-    let accentColor: Color
+    let pinColor: Color
     let backgroundColor: Color
     let haptic: HapticOption
     
-    init(
+    public init(
         isOn: Binding<Bool>,
         width: CGFloat = 64,
-        accentColor: Color = .blue,
+        pinColor: Color = .blue,
         backgroundColor: Color = Color.gray.opacity(0.3),
         haptic: HapticOption = .never) {
             self._isOn = isOn
             self.width = width
-            self.accentColor = accentColor
+            self.pinColor = pinColor
             self.backgroundColor = backgroundColor
             self.haptic = haptic
     }
     
-    var body: some View {
+    public var body: some View {
         Circle()
-            .fill(accentColor)
+            .fill(pinColor)
             .aspectRatio(1, contentMode: .fit)
             .padding(width * 0.06)
             .frame(width: width, height: width / 1.8, alignment: isOn ? .trailing : .leading)
@@ -52,8 +52,10 @@ struct CustomToggle_Previews: PreviewProvider {
         @State private var isOn: Bool = false
         var body: some View {
             VStack {
-                CustomToggle(isOn: $isOn, accentColor: .white, backgroundColor: isOn ? .green : .gray.opacity(0.3))
-                CustomToggle(isOn: $isOn, accentColor: isOn ? .red : .white, backgroundColor: isOn ? .blue : .gray.opacity(0.3))
+                CustomToggle(isOn: $isOn)
+                CustomToggle(isOn: $isOn, width: 100, pinColor: .gray, backgroundColor: .black, haptic: .selection)
+                CustomToggle(isOn: $isOn, pinColor: .white, backgroundColor: isOn ? .green : .gray.opacity(0.3))
+                CustomToggle(isOn: $isOn, pinColor: isOn ? .red : .white, backgroundColor: isOn ? .blue : .gray.opacity(0.3))
             }
         }
     }
