@@ -40,7 +40,7 @@ final class Haptics {
         case .medium: mediumGenerator.prepare()
         case .heavy: heavyGenerator.prepare()
         case .selection: selectionGenerator.prepare()
-        case .none: break
+        case .never: break
         }
     }
     
@@ -55,7 +55,7 @@ final class Haptics {
         case .medium: mediumGenerator.impactOccurred()
         case .heavy: heavyGenerator.impactOccurred()
         case .selection: selectionGenerator.selectionChanged()
-        case .none: break
+        case .never: break
         }
     }
     

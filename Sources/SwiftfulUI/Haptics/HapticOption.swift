@@ -14,6 +14,6 @@ public enum HapticOption: String, CaseIterable {
     case success
     case error
     case warning
-    case none
     case selection
+    case never
 }
