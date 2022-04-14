@@ -9,7 +9,7 @@ import SwiftUI
 
 @available(iOS 15, *)
 /// Customizable progress bar.
-struct CustomProgressBar<T: BinaryFloatingPoint>: View {
+public struct CustomProgressBar<T: BinaryFloatingPoint>: View {
         
     let selection: T
     let range: ClosedRange<T>
@@ -19,7 +19,7 @@ struct CustomProgressBar<T: BinaryFloatingPoint>: View {
     let height: CGFloat?
     
     /// Init with AnyShapeStyle (supports gradients)
-    init(
+    public init(
         selection: T,
         range: ClosedRange<T>,
         background: AnyShapeStyle = AnyShapeStyle(Color.gray.opacity(0.3)),
@@ -35,7 +35,7 @@ struct CustomProgressBar<T: BinaryFloatingPoint>: View {
         }
     
     /// Init with plain Colors
-    init(
+    public init(
         selection: T,
         range: ClosedRange<T>,
         backgroundColor: Color = Color.gray.opacity(0.3),
@@ -50,7 +50,7 @@ struct CustomProgressBar<T: BinaryFloatingPoint>: View {
             self.height = height
         }
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: cornerRadius)
@@ -97,40 +97,11 @@ struct CustomProgressBar<T: BinaryFloatingPoint>: View {
 struct CustomProgressBar_Previews: PreviewProvider {
     
     struct PreviewView: View {
-        
         @State private var selection: Double = 55
         @State private var range: ClosedRange<Double> = 0...100
 
         var body: some View {
-            VStack {
-                Text("Selection: \(selection)")
-                Text("Range: \(range.lowerBound) : \(range.upperBound)")
-
-                VStack {
-                    CustomProgressBar(selection: selection, range: range, cornerRadius: 0)
-                        .padding()
-                    
-                    CustomProgressBar(
-                        selection: selection,
-                        range: range,
-                        background: AnyShapeStyle(Color.yellow),
-                        foreground: AnyShapeStyle(LinearGradient(colors: [.red, .orange], startPoint: .leading, endPoint: .bottomTrailing)))
-                    
-                        .padding()
-                    
-                    CustomProgressBar(selection: selection, range: range, backgroundColor: .green, foregroundColor: .black, height: 20)
-                        .padding()
-                }
-                .background(Color.black.opacity(0.001))
-                .onTapGesture {
-                    withAnimation {
-                        selection = .random(in: 0...100)
-                        let min: Double = .random(in: 0...50)
-                        let max: Double = .random(in: 50...100)
-                        range = min...max
-                    }
-                }
-            }
+            CustomProgressBar(selection: selection, range: range)
         }
     }
     
