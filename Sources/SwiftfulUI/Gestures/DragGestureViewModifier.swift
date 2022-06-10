@@ -73,6 +73,8 @@ struct DragGestureViewModifier: ViewModifier {
                                 lastOffset = CGSize(
                                     width: lastOffset.width + value.translation.width,
                                     height: lastOffset.height + value.translation.height)
+                            } else {
+                                onChanged?(offset)
                             }
                         }
                     })
