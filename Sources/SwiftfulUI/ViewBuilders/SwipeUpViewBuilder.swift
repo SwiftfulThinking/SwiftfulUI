@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(iOS 14, *)
-struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View {
+public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View {
     
     @Environment(\.safeAreaInsets) private var safeAreaInsets
 
@@ -23,7 +23,7 @@ struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View {
     @State private var dragOffset: CGSize = .zero
     @State private var collapsedViewFrame: CGRect = .zero
     
-    init(isFullScreen: Binding<Bool>, dragThreshold: CGFloat = 35, backgroundColor: Color? = nil, animation: Animation = .easeInOut, animateOpacity: Bool = true, @ViewBuilder fullScreenView: @escaping () -> FullScreenView, @ViewBuilder collapsedView: @escaping () -> CollapsedView) {
+    public init(isFullScreen: Binding<Bool>, dragThreshold: CGFloat = 35, backgroundColor: Color? = nil, animation: Animation = .easeInOut, animateOpacity: Bool = true, @ViewBuilder fullScreenView: @escaping () -> FullScreenView, @ViewBuilder collapsedView: @escaping () -> CollapsedView) {
         self.fullContent = fullScreenView
         self.shortContent = collapsedView
         self.dragThreshold = dragThreshold
