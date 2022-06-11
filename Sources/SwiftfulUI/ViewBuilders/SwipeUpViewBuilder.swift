@@ -33,7 +33,7 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
         self._isFullScreen = isFullScreen
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .top) {
             ZStack {
                 RoundedRectangle(cornerRadius: 0)
