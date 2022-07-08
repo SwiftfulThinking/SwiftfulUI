@@ -59,6 +59,7 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
                 .opacity(shortContentOpacity)
                 .readingFrame { frame in
                     collapsedViewFrame = frame
+                    print("read collapsedViewFrame")
                 }
         }
         .frame(height: height)

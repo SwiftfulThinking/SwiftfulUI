@@ -44,6 +44,7 @@ public struct TabBarViewBuilderWithDelegate<Content:View, TabBar: View, HoverBar
                 .offset(y: tabBarOffset)
                 .readingFrame { frame in
                     tabBarFrame = frame
+                    print("read tabBarFrame")
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                 .background(
@@ -51,6 +52,7 @@ public struct TabBarViewBuilderWithDelegate<Content:View, TabBar: View, HoverBar
                         .offset(y: hoverBarOffset)
                         .readingFrame { frame in
                             hoverFrame = frame
+                            print("read hoverFrame")
                         }
                 ,alignment: .bottom)
                 .animation(.easeInOut, value: delegate?.hideTabBar)
