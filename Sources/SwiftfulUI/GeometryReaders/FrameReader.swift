@@ -22,13 +22,16 @@ public struct FrameReader: View {
     }
 
     public var body: some View {
-        GeometryReader { geo in
-            Text(" ")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onAppear(perform: {
-                    onChange(geo.frame(in: coordinateSpace))
-                })
-                .onChange(of: geo.frame(in: coordinateSpace), perform: onChange)
+        ZStack {
+            GeometryReader { geo in
+                Text(" ")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear(perform: {
+                        onChange(geo.frame(in: coordinateSpace))
+                    })
+                    .onChange(of: geo.frame(in: coordinateSpace), perform: onChange)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
