@@ -119,8 +119,10 @@ struct TabBarViewBuilderWithDelegate_Previews: PreviewProvider {
             } tabBar: {
                 TabBarDefaultView(tabs: tabs, selection: $selection, backgroundColor: .red)
             } hoverBar: {
-                SwipeUpViewBuilder(isFullScreen: $delegate.hoverIsFullScreen) {
-                    Color.purple.ignoresSafeArea()
+                SwipeUpViewBuilder(isFullScreen: $delegate.hoverIsFullScreen, backgroundColor: .pink) {
+                    ZStack {
+                        Text("Hey")
+                    }
                 } collapsedView: {
                     Rectangle()
                         .frame(height: 50)
