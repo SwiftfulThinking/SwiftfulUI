@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-protocol TabBarDelegate {
+public protocol TabBarDelegate {
     var hideTabBar: Bool { get set }
     var hideHoverBar: Bool { get set }
 }
 
 @available(iOS 14, *)
-struct TabBarViewBuilderWithDelegate<Content:View, TabBar: View, HoverBar: View>: View {
+public struct TabBarViewBuilderWithDelegate<Content:View, TabBar: View, HoverBar: View>: View {
     
     @Environment(\.safeAreaInsets) var safeAreaInsets
     
@@ -36,7 +36,7 @@ struct TabBarViewBuilderWithDelegate<Content:View, TabBar: View, HoverBar: View>
             self.hoverView = hoverBar()
         }
 
-    var body: some View {
+    public var body: some View {
         TabBarViewBuilder(style: .zStack) {
             content()
         } tabBar: {

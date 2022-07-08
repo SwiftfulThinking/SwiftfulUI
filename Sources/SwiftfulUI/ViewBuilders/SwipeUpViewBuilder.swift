@@ -41,7 +41,7 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
                     .ignoresSafeArea()
                     .overlay(
                         fullContent()
-                            .opacity(fullContentOpacity)
+//                            .opacity(fullContentOpacity)
                              ,alignment: .top)
             }
             
@@ -65,19 +65,19 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
 
                     if isFullScreen {
                         if swipeDownIsAcrossThreshold {
-                            withAnimation {
+                            withAnimation(animation) {
                                 isFullScreen = false
                             }
                         }
                     } else {
                         if swipeUpIsAcrossThreshold {
-                            withAnimation {
+                            withAnimation(animation) {
                                 isFullScreen = true
                             }
                         }
                     }
 
-                    withAnimation(.easeInOut) {
+                    withAnimation(animation) {
                         self.dragOffset = .zero
                     }
                 })
@@ -122,19 +122,19 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
         }
     }
     
-    private var fullContentOpacity: CGFloat {
-        guard animateOpacity else { return 1 }
-        
-        if !isDragging {
-            return isFullScreen ? 1 : 0
-        }
-        
-        if isFullScreen {
-            return 1 - dragPercentage
-        } else {
-            return dragPercentage
-        }
-    }
+//    private var fullContentOpacity: CGFloat {
+//        guard animateOpacity else { return 1 }
+//
+//        if !isDragging {
+//            return isFullScreen ? 1 : 0
+//        }
+//
+//        if isFullScreen {
+//            return 1 - dragPercentage
+//        } else {
+//            return dragPercentage
+//        }
+//    }
     
 }
 
