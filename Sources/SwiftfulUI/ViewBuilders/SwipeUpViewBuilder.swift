@@ -57,9 +57,9 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
             
             shortContent()
                 .opacity(shortContentOpacity)
-                .readingFrame { frame in
-                    collapsedViewFrame = frame
-                }
+//                .readingFrame { frame in
+//                    collapsedViewFrame = frame
+//                }
         }
         .frame(height: height)
         .animation(animation, value: dragOffset)
