@@ -18,8 +18,8 @@ public struct TabBarViewBuilderWithDelegate<Content:View, TabBar: View, HoverBar
     @Environment(\.safeAreaInsets) var safeAreaInsets
     
     let delegate: TabBarDelegate?
-    let content: () -> Content
-    let tabBar: () -> TabBar
+    let content: Content
+    let tabBar: TabBar
     let hoverView: HoverBar
     
     @State private var tabBarFrame: CGRect = .zero
@@ -27,20 +27,20 @@ public struct TabBarViewBuilderWithDelegate<Content:View, TabBar: View, HoverBar
 
     public init(
         delegate: TabBarDelegate?,
-        @ViewBuilder content: @escaping () -> Content,
-        @ViewBuilder tabBar: @escaping () -> TabBar,
+        @ViewBuilder content: () -> Content,
+        @ViewBuilder tabBar: () -> TabBar,
         @ViewBuilder hoverBar: () -> HoverBar) {
             self.delegate = delegate
-            self.content = content
-            self.tabBar = tabBar
+            self.content = content()
+            self.tabBar = tabBar()
             self.hoverView = hoverBar()
         }
 
     public var body: some View {
         TabBarViewBuilder(style: .zStack) {
-            content()
+            content
         } tabBar: {
-            tabBar()
+            tabBar
                 .offset(y: tabBarOffset)
                 .readingFrame { frame in
                     tabBarFrame = frame
