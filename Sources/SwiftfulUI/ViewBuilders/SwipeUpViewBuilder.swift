@@ -55,12 +55,13 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
                         alignment: .top)
             }
             
-            shortContent()
-                .opacity(shortContentOpacity)
-                .readingFrame { frame in
-                    collapsedViewFrame = frame
-                    print("read collapsedViewFrame")
-                }
+            ZStack {
+                shortContent()
+                    .opacity(shortContentOpacity)
+            }
+            .readingFrame { frame in
+                collapsedViewFrame = frame
+            }
         }
         .frame(height: height)
         .animation(animation, value: dragOffset)
