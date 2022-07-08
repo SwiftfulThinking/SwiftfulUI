@@ -18,17 +18,18 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     let backgroundColor: Color?
     let animation: Animation
     let animateOpacity: Bool
+    let collapsedViewHeight: CGFloat
     
     @Binding private var isFullScreen: Bool
     @State private var dragOffset: CGSize = .zero
-    @State private var collapsedViewFrame: CGRect = .zero
     
-    public init(isFullScreen: Binding<Bool>, dragThreshold: CGFloat = 35, backgroundColor: Color? = nil, animation: Animation = .easeInOut, animateOpacity: Bool = true, @ViewBuilder fullScreenView: @escaping () -> FullScreenView, @ViewBuilder collapsedView: @escaping () -> CollapsedView) {
+    public init(isFullScreen: Binding<Bool>, dragThreshold: CGFloat = 35, backgroundColor: Color? = nil, animation: Animation = .easeInOut, animateOpacity: Bool = true, collapsedViewHeight: CGFloat = 55, @ViewBuilder fullScreenView: @escaping () -> FullScreenView, @ViewBuilder collapsedView: @escaping () -> CollapsedView) {
         self.fullContent = fullScreenView
         self.shortContent = collapsedView
         self.dragThreshold = dragThreshold
         self.animation = animation
         self.animateOpacity = animateOpacity
+        self.collapsedViewHeight = collapsedViewHeight
         self.backgroundColor = backgroundColor
         self._isFullScreen = isFullScreen
     }
@@ -55,15 +56,8 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
                         alignment: .top)
             }
             
-            ZStack {
-                Text(" ") // do not remove
-                
-                shortContent()
-                    .opacity(shortContentOpacity)
-            }
-            .readingFrame { frame in
-                collapsedViewFrame = frame
-            }
+            shortContent()
+                .opacity(shortContentOpacity)
         }
         .frame(height: height)
         .animation(animation, value: dragOffset)
@@ -102,7 +96,7 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
         if isFullScreen {
             return isDragging ? UIScreen.main.bounds.height - safeAreaInsets.top - dragOffset.height : nil
         } else {
-            return collapsedViewFrame.height - dragOffset.height
+            return collapsedViewHeight - dragOffset.height
         }
     }
     
