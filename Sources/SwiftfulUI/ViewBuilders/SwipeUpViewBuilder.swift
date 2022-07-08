@@ -41,6 +41,7 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
                     .ignoresSafeArea()
                     .overlay(
                         fullContent()
+                            .frame(minHeight: 200)
 //                            .opacity(fullContentOpacity)
                              ,alignment: .top)
             }
