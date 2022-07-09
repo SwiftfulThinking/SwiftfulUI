@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 public struct TabBarItem: Hashable {
-    let title: String?
-    let iconName: String?
-    let image: UIImage?
-    private(set) var badgeCount: Int?
+    public let title: String?
+    public let iconName: String?
+    public let image: UIImage?
+    public private(set) var badgeCount: Int?
     
     public init(title: String?, iconName: String? = nil, image: UIImage? = nil, badgeCount: Int? = nil) {
         self.title = title
@@ -21,7 +21,7 @@ public struct TabBarItem: Hashable {
         self.badgeCount = badgeCount
     }
     
-    mutating func updateBadgeCount(to count: Int) {
+    public mutating func updateBadgeCount(to count: Int) {
         badgeCount = count
     }
 }
