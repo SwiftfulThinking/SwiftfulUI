@@ -10,6 +10,12 @@ import SwiftUI
 
 struct AnimatableZIndexModifier: ViewModifier, Animatable {
     var index: Double
+    
+    var animatableData: Double {
+      get { index }
+      set { index = newValue }
+    }
+    
     func body(content: Content) -> some View {
         content
             .zIndex(index)
