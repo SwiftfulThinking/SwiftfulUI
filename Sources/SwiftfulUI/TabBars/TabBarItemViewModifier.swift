@@ -18,19 +18,6 @@ struct TabBarItemsPreferenceKey: PreferenceKey {
 
 struct TabBarItemViewModifer: ViewModifier {
     
-    let tab: AnyHashable
-    let selection: AnyHashable
-    
-    func body(content: Content) -> some View {
-        content
-            .preference(key: TabBarItemsPreferenceKey.self, value: [tab])
-            .opacity(selection == tab ? 1 : 0)
-    }
-
-}
-
-struct LazyTabBarItemViewModifer: ViewModifier {
-    
     @State private var didLoad: Bool = false
     let tab: AnyHashable
     let selection: AnyHashable
@@ -51,11 +38,6 @@ struct LazyTabBarItemViewModifer: ViewModifier {
 }
 
 public extension View {
-    
-    /// Tag a View with a value. Use selection to determine which tab is currently displaying.
-    func lazyTabBarItem(tab: AnyHashable, selection: AnyHashable) -> some View {
-        modifier(LazyTabBarItemViewModifer(tab: tab, selection: selection))
-    }
     
     /// Tag a View with a value. Use selection to determine which tab is currently displaying.
     func tabBarItem(tab: AnyHashable, selection: AnyHashable) -> some View {
