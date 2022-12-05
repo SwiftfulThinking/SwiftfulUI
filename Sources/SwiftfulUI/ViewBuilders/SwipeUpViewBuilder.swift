@@ -43,14 +43,14 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
                         ZStack {
                             if let backgroundColor = backgroundColor {
                                 backgroundColor
-                                    .frame(minHeight: 200)
+                                    .frame(minHeight: 200, alignment: .top)
                             }
                         }
                         , alignment: .top)
                     .ignoresSafeArea()
                     .overlay(
                         fullContent()
-                            .frame(minHeight: 200)
+                            .frame(minHeight: 200, alignment: .top)
 //                            .opacity(fullContentOpacity)
                              ,
                         alignment: .top)
@@ -153,9 +153,9 @@ struct SwipeUpViewBuilder_Previews: PreviewProvider {
         @State private var isFullScreen: Bool = false
         var body: some View {
             SwipeUpViewBuilder(isFullScreen: $isFullScreen, dragThreshold: 50, backgroundColor: .blue, animateOpacity: true) {
-                ZStack {
-                    
-                }
+                Rectangle()
+                    .fill(Color.green)
+                    .frame(height: 700)
             } collapsedView: {
                 RoundedRectangle(cornerRadius: 00)
                     .frame(height: 55)
