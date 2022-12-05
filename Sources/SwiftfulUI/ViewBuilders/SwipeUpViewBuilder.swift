@@ -17,18 +17,33 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     let dragThreshold: CGFloat
     let backgroundColor: Color?
     let animation: Animation
-    let animateOpacity: Bool
+    let animateOpacityOption: OpacityAnimationOption
     let collapsedViewHeight: CGFloat
     
     @Binding private var isFullScreen: Bool
     @State private var dragOffset: CGSize = .zero
     
-    public init(isFullScreen: Binding<Bool>, dragThreshold: CGFloat = 35, backgroundColor: Color? = nil, animation: Animation = .easeInOut, animateOpacity: Bool = true, collapsedViewHeight: CGFloat = 55, @ViewBuilder fullScreenView: @escaping () -> FullScreenView, @ViewBuilder collapsedView: @escaping () -> CollapsedView) {
+    public enum OpacityAnimationOption {
+        case collapsedView
+        case fullView
+        case both
+        case none
+        
+        var fullViewShouldAnimate: Bool {
+            self == .fullView || self == .both
+        }
+        
+        var collapsedViewShouldAnimate: Bool {
+            self == .collapsedView || self == .both
+        }
+    }
+    
+    public init(isFullScreen: Binding<Bool>, dragThreshold: CGFloat = 35, backgroundColor: Color? = nil, animation: Animation = .easeInOut, animateOpacityOption: OpacityAnimationOption = .none, collapsedViewHeight: CGFloat = 55, @ViewBuilder fullScreenView: @escaping () -> FullScreenView, @ViewBuilder collapsedView: @escaping () -> CollapsedView) {
         self.fullContent = fullScreenView
         self.shortContent = collapsedView
         self.dragThreshold = dragThreshold
         self.animation = animation
-        self.animateOpacity = animateOpacity
+        self.animateOpacityOption = animateOpacityOption
         self.collapsedViewHeight = collapsedViewHeight
         self.backgroundColor = backgroundColor
         self._isFullScreen = isFullScreen
@@ -62,7 +77,7 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
                     .overlay(
                         fullContent()
                             .frame(minHeight: 200, alignment: .top)
-//                            .opacity(fullContentOpacity)
+                            .opacity(fullContentOpacity)
                              , alignment: .top)
 
             }
@@ -133,7 +148,7 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     }
     
     private var shortContentOpacity: CGFloat {
-        guard animateOpacity else { return 1 }
+        guard animateOpacityOption.collapsedViewShouldAnimate else { return 1 }
         
         if !isDragging {
             return isFullScreen ? 0 : 1
@@ -146,19 +161,19 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
         }
     }
     
-//    private var fullContentOpacity: CGFloat {
-//        guard animateOpacity else { return 1 }
-//
-//        if !isDragging {
-//            return isFullScreen ? 1 : 0
-//        }
-//
-//        if isFullScreen {
-//            return 1 - dragPercentage
-//        } else {
-//            return dragPercentage
-//        }
-//    }
+    private var fullContentOpacity: CGFloat {
+        guard animateOpacityOption.fullViewShouldAnimate else { return 1 }
+
+        if !isDragging {
+            return isFullScreen ? 1 : 0
+        }
+
+        if isFullScreen {
+            return 1 - dragPercentage
+        } else {
+            return dragPercentage
+        }
+    }
     
 }
 
@@ -174,7 +189,7 @@ struct SwipeUpViewBuilder_Previews: PreviewProvider {
                     .background(Color.yellow)
                 
                 
-                SwipeUpViewBuilder(isFullScreen: $isFullScreen, dragThreshold: 50, backgroundColor: .black, animateOpacity: true, collapsedViewHeight: 50) {
+                SwipeUpViewBuilder(isFullScreen: $isFullScreen, dragThreshold: 50, backgroundColor: .black, animateOpacityOption: .none, collapsedViewHeight: 50) {
                     Rectangle()
                         .fill(Color.green)
 //                        .frame(height: 700)
