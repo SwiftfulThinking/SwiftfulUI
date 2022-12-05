@@ -17,36 +17,38 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     let dragThreshold: CGFloat
     let backgroundColor: Color?
     let animation: Animation
-    let animateOpacityOption: OpacityAnimationOption
+    let fullContentOpacityOption: OpacityAnimationOption
+    let shortContentOpacityOption: OpacityAnimationOption
     let collapsedViewHeight: CGFloat
     
     @Binding private var isFullScreen: Bool
     @State private var dragOffset: CGSize = .zero
     
     public enum OpacityAnimationOption {
-        case collapsedView
-        case fullView
-        case both
+        case onDrag
+        case onEnded
         case none
-        
-        var fullViewShouldAnimate: Bool {
-            self == .fullView || self == .both
-        }
-        
-        var collapsedViewShouldAnimate: Bool {
-            self == .collapsedView || self == .both
-        }
     }
     
-    public init(isFullScreen: Binding<Bool>, dragThreshold: CGFloat = 35, backgroundColor: Color? = nil, animation: Animation = .easeInOut, animateOpacityOption: OpacityAnimationOption = .none, collapsedViewHeight: CGFloat = 55, @ViewBuilder fullScreenView: @escaping () -> FullScreenView, @ViewBuilder collapsedView: @escaping () -> CollapsedView) {
-        self.fullContent = fullScreenView
-        self.shortContent = collapsedView
-        self.dragThreshold = dragThreshold
-        self.animation = animation
-        self.animateOpacityOption = animateOpacityOption
-        self.collapsedViewHeight = collapsedViewHeight
-        self.backgroundColor = backgroundColor
-        self._isFullScreen = isFullScreen
+    public init(
+        isFullScreen: Binding<Bool>,
+        collapsedViewHeight: CGFloat,
+        dragThreshold: CGFloat = 35,
+        backgroundColor: Color? = nil,
+        animation: Animation = .easeInOut,
+        fullScreenViewOpacityAnimation: OpacityAnimationOption = .none,
+        collapsedViewOpacityAnimation: OpacityAnimationOption = .none,
+        @ViewBuilder fullScreenView: @escaping () -> FullScreenView,
+        @ViewBuilder collapsedView: @escaping () -> CollapsedView) {
+            self.fullContent = fullScreenView
+            self.shortContent = collapsedView
+            self.collapsedViewHeight = collapsedViewHeight
+            self.dragThreshold = dragThreshold
+            self.backgroundColor = backgroundColor
+            self.animation = animation
+            self.fullContentOpacityOption = fullScreenViewOpacityAnimation
+            self.shortContentOpacityOption = collapsedViewOpacityAnimation
+            self._isFullScreen = isFullScreen
     }
     
     public var body: some View {
@@ -148,30 +150,40 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     }
     
     private var shortContentOpacity: CGFloat {
-        guard animateOpacityOption.collapsedViewShouldAnimate else { return 1 }
-        
-        if !isDragging {
+        switch shortContentOpacityOption {
+        case .none:
+            return 1
+        case .onDrag:
+            if !isDragging {
+                return isFullScreen ? 0 : 1
+            }
+            
+            if isFullScreen {
+                return dragPercentage
+            } else {
+                return 1 - dragPercentage
+            }
+        case .onEnded:
             return isFullScreen ? 0 : 1
-        }
-        
-        if isFullScreen {
-            return dragPercentage
-        } else {
-            return 1 - dragPercentage
         }
     }
     
     private var fullContentOpacity: CGFloat {
-        guard animateOpacityOption.fullViewShouldAnimate else { return 1 }
+        switch fullContentOpacityOption {
+        case .none:
+            return 1
+        case .onDrag:
+            if !isDragging {
+                return isFullScreen ? 1 : 0
+            }
 
-        if !isDragging {
+            if isFullScreen {
+                return 1 - dragPercentage
+            } else {
+                return dragPercentage
+            }
+        case .onEnded:
             return isFullScreen ? 1 : 0
-        }
-
-        if isFullScreen {
-            return 1 - dragPercentage
-        } else {
-            return dragPercentage
         }
     }
     
@@ -188,8 +200,7 @@ struct SwipeUpViewBuilder_Previews: PreviewProvider {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color.yellow)
                 
-                
-                SwipeUpViewBuilder(isFullScreen: $isFullScreen, dragThreshold: 50, backgroundColor: .black, animateOpacityOption: .none, collapsedViewHeight: 50) {
+                SwipeUpViewBuilder(isFullScreen: $isFullScreen, collapsedViewHeight: 50, dragThreshold: 35, backgroundColor: .black, fullScreenViewOpacityAnimation: .onDrag, collapsedViewOpacityAnimation: .none) {
                     Rectangle()
                         .fill(Color.green)
 //                        .frame(height: 700)

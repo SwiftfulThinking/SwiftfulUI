@@ -119,7 +119,7 @@ struct TabBarViewBuilderWithDelegate_Previews: PreviewProvider {
             } tabBar: {
                 TabBarDefaultView(tabs: tabs, selection: $selection, backgroundColor: .red)
             } hoverBar: {
-                SwipeUpViewBuilder(isFullScreen: $delegate.hoverIsFullScreen, backgroundColor: .pink) {
+                SwipeUpViewBuilder(isFullScreen: $delegate.hoverIsFullScreen, collapsedViewHeight: 55, backgroundColor: .pink) {
                     ZStack {
                         Text("Hey")
                     }
