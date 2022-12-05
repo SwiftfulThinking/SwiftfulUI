@@ -35,8 +35,19 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     }
     
     public var body: some View {
+        Rectangle()
+            .fill(Color.clear)
+            .ignoresSafeArea()
+            .overlay(
+                swipeUpViewBuilder
+                
+                ,alignment: .top
+            )
+    }
+    
+    public var swipeUpViewBuilder: some View {
         ZStack(alignment: .top) {
-            ZStack {
+            ZStack(alignment: .bottom) {
                 RoundedRectangle(cornerRadius: 0)
                     .fill(Color.black.opacity(0.001))
                     .overlay(
@@ -52,14 +63,15 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
                         fullContent()
                             .frame(minHeight: 200, alignment: .top)
 //                            .opacity(fullContentOpacity)
-                             ,
-                        alignment: .top)
+                             , alignment: .top)
+
             }
             
             shortContent()
                 .opacity(shortContentOpacity)
+
         }
-        .frame(height: height)
+        .frame(height: height, alignment: .bottom)
         .animation(animation, value: dragOffset)
         .animation(animation, value: isFullScreen)
         .frame(maxHeight: .infinity, alignment: .bottom)
@@ -94,7 +106,11 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     
     private var height: CGFloat? {
         if isFullScreen {
-            return isDragging ? UIScreen.main.bounds.height - safeAreaInsets.top - dragOffset.height : nil
+            if isDragging {
+                return UIScreen.main.bounds.height - safeAreaInsets.top - safeAreaInsets.bottom - dragOffset.height
+            } else {
+                return nil
+            }
         } else {
             return collapsedViewHeight - dragOffset.height
         }
@@ -152,13 +168,27 @@ struct SwipeUpViewBuilder_Previews: PreviewProvider {
     struct PreviewView: View {
         @State private var isFullScreen: Bool = false
         var body: some View {
-            SwipeUpViewBuilder(isFullScreen: $isFullScreen, dragThreshold: 50, backgroundColor: .blue, animateOpacity: true) {
+            ZStack(alignment: .bottom) {
+                Text(" ")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.yellow)
+                
+                
+                SwipeUpViewBuilder(isFullScreen: $isFullScreen, dragThreshold: 50, backgroundColor: .black, animateOpacity: true, collapsedViewHeight: 50) {
+                    Rectangle()
+                        .fill(Color.green)
+//                        .frame(height: 700)
+                } collapsedView: {
+                    Rectangle()
+                        .fill(Color.blue)
+                        .frame(height: 50)
+                        .offset(x: 50)
+                }
+
                 Rectangle()
-                    .fill(Color.green)
-                    .frame(height: 700)
-            } collapsedView: {
-                RoundedRectangle(cornerRadius: 00)
-                    .frame(height: 55)
+                    .fill(Color.red)
+                    .frame(height: 50)
+                    .offset(x: 100)
             }
         }
     }
