@@ -123,7 +123,7 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     
     private var height: CGFloat? {
         if isFullScreen {
-            if isDragging {
+            if isDragging && dragOffset.height > 0 {
                 return UIScreen.main.bounds.height - safeAreaInsets.top - safeAreaInsets.bottom - dragOffset.height
             } else {
                 return nil
@@ -146,7 +146,15 @@ public struct SwipeUpViewBuilder<FullScreenView:View, CollapsedView: View>: View
     }
     
     private var dragPercentage: Double {
-        abs(dragOffset.height) / (UIScreen.main.bounds.height - safeAreaInsets.top - safeAreaInsets.bottom)
+        if isFullScreen && dragOffset.height <= 0 {
+            return 0
+        }
+        
+        if !isFullScreen && dragOffset.height >= 0 {
+            return 0
+        }
+        
+        return abs(dragOffset.height) / (UIScreen.main.bounds.height - safeAreaInsets.top - safeAreaInsets.bottom)
     }
     
     private var shortContentOpacity: CGFloat {
