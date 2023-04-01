@@ -29,7 +29,7 @@ struct ButtonStyleViewModifier: ButtonStyle {
 
 }
 
-enum ButtonType {
+public enum ButtonType {
     case press, opacity, tap
 }
 
@@ -43,6 +43,7 @@ public extension View {
         .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
     }
     
+    @MainActor
     func asButton(_ type: ButtonType = .tap, action: @escaping @MainActor () -> Void) -> some View {
         switch type {
         case .press:
