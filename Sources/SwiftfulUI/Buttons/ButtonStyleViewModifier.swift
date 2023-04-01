@@ -44,6 +44,7 @@ public extension View {
     }
     
     @MainActor
+    @ViewBuilder
     func asButton(_ type: ButtonType = .tap, action: @escaping @MainActor () -> Void) -> some View {
         switch type {
         case .press:
