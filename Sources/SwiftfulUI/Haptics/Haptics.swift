@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-final class Haptics {
+public final class Haptics {
 
-    static let shared = Haptics()
+    public static let shared = Haptics()
     private init() {}
     
     let notificationGenerator = UINotificationFeedbackGenerator()
@@ -25,7 +25,7 @@ final class Haptics {
     /// Calling prepare() and then immediately triggering feedback (without any time in between) does not improve latency.
     ///
     /// - Parameter option: If providing an option, only prepare that option. If nil, prepare all options.
-    func prepare(option: HapticOption? = nil) {
+    public func prepare(option: HapticOption? = nil) {
         guard let option = option else {
             notificationGenerator.prepare()
             lightGenerator.prepare()
@@ -46,7 +46,7 @@ final class Haptics {
     
     /// Immediately cause haptic occurrence.
     /// - Warning: It is recommended to call 'Haptics.prepare' prior to 'vibrate' to remove latency issues. However, vibrate will occur regardless.
-    func vibrate(option: HapticOption) {
+    public func vibrate(option: HapticOption) {
         switch option {
         case .success: notificationGenerator.notificationOccurred(.success)
         case .error: notificationGenerator.notificationOccurred(.error)
