@@ -1,6 +1,6 @@
 //
-//  SwiftUIView.swift
-//  
+//  NonLazyVGrid.swift
+//
 //
 //  Created by Nick Sarno on 11/12/23.
 //
