@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// The fetch request is called every time the view appears, unless data has already been successfully loaded. The Task is cancelled when the view disappears.
 @available(iOS 14, *)
-public struct AsyncViewBuilder<Content: View, T>: View {
+public struct AsyncViewBuilder<T>: View {
     
     public enum AsyncLoadingPhase {
         /// No value is loaded.
@@ -24,34 +24,21 @@ public struct AsyncViewBuilder<Content: View, T>: View {
     
     @State private var task: Task<Void, Never>? = nil
     @State private var phase: AsyncLoadingPhase = .loading
-    let priority: TaskPriority
-    let redactedStyle: RedactedStyle
-    let redactedOnFailure: Bool
+    var priority: TaskPriority = .userInitiated
+    var redactedStyle: RedactedStyle = .never
+    var redactedOnFailure: Bool = false
     let fetch: () async throws -> T
-    let content: (AsyncLoadingPhase) -> Content
-    
-    public init(
-        priority: TaskPriority = .userInitiated,
-        redactedStyle: RedactedStyle = .never,
-        redactedOnFailure: Bool = false,
-        fetch: @escaping () async throws -> T,
-        @ViewBuilder content: @escaping (AsyncLoadingPhase) -> Content) {
-            self.priority = priority
-            self.redactedStyle = redactedStyle
-            self.redactedOnFailure = redactedOnFailure
-            self.fetch = fetch
-            self.content = content
-        }
-    
+    let content: (AsyncLoadingPhase) -> any View
+        
     public var body: some View {
         if #available(iOS 15.0, *) {
-            content(phase)
+            AnyView(content(phase))
                 .redacted(if: shouldBeRedacted, style: redactedStyle)
                 .task(priority: priority) {
                     await performFetchRequestIfNeeded()
                 }
         } else {
-            content(phase)
+            AnyView(content(phase))
                 .redacted(if: shouldBeRedacted, style: redactedStyle)
                 .onAppear {
                     task = Task(priority: priority) {
@@ -90,44 +77,35 @@ public struct AsyncViewBuilder<Content: View, T>: View {
     }
 }
 
-// Note: Preview doesn't work... Xcode bug? Works when not in Package.
-//@available(iOS 15, *)
-//struct AsyncViewBuilder_Previews: PreviewProvider {
-//    
-//    struct PreviewView: View {
-//        var body: some View {
-//            ZStack {
-//                AsyncViewBuilder {
-//                    try await fetchImage()
-//                } content: { phase in
-//                    switch phase {
-//                    case .loading:
-//                        Image(uiImage: UIImage(systemName: "house.fill")!)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 200, height: 200)
-//                    case .success(let image):
-//                        Image(uiImage: image)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 200, height: 200)
-//                    case .failure:
-//                        Text("FAILURE")
-//                    }
-//                }
-//            }
-//        }
-//        
-//        func fetchImage() async throws -> UIImage {
-//            try? await Task.sleep(nanoseconds: 2_000_000_000)
-//            return UIImage(systemName: "heart.fill")!
-//        }
-//    }
-//
-//    
-//    static var previews: some View {
-//        PreviewView()
-//    }
-//    
-//}
-
+#Preview {
+    if #available(iOS 14, *) {
+        return AsyncViewBuilder(
+            priority: .high,
+            redactedStyle: .never,
+            redactedOnFailure: true,
+            fetch: {
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                return "heart.fill"
+            }, content: { phase in
+                ZStack {
+                    switch phase {
+                    case .loading:
+                        Image(systemName: "house.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                    case .success(let imageName):
+                        Image(systemName: imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                    case .failure:
+                        Text("FAILURE")
+                    }
+                }
+            }
+        )
+    } else {
+        return Text("err")
+    }
+}

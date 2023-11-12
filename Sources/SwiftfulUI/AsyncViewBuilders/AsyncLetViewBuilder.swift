@@ -12,7 +12,7 @@ import SwiftUI
 ///
 /// The fetch requests are called every time the view appears, unless data has already been successfully loaded. The Tasks are cancelled when the view disappears.
 @available(iOS 14, *)
-public struct AsyncLetViewBuilder<Content: View, A, B>: View {
+public struct AsyncLetViewBuilder<A, B>: View {
     
     public enum AsyncLetLoadingPhase {
         /// No value is loaded.
@@ -25,37 +25,22 @@ public struct AsyncLetViewBuilder<Content: View, A, B>: View {
     
     @State private var task: Task<Void, Never>? = nil
     @State private var phase: AsyncLetLoadingPhase = .loading
-    let priority: TaskPriority
-    let redactedStyle: RedactedStyle
-    let redactedOnFailure: Bool
+    var priority: TaskPriority = .userInitiated
+    var redactedStyle: RedactedStyle = .never
+    var redactedOnFailure: Bool = false
     let fetchA: () async throws -> A
     let fetchB: () async throws -> B
-    let content: (AsyncLetLoadingPhase) -> Content
-    
-    public init(
-        priority: TaskPriority = .userInitiated,
-        redactedStyle: RedactedStyle = .never,
-        redactedOnFailure: Bool = false,
-        fetchA: @escaping () async throws -> A,
-        fetchB: @escaping () async throws -> B,
-        @ViewBuilder content: @escaping (AsyncLetLoadingPhase) -> Content) {
-            self.priority = priority
-            self.redactedStyle = redactedStyle
-            self.redactedOnFailure = redactedOnFailure
-            self.fetchA = fetchA
-            self.fetchB = fetchB
-            self.content = content
-        }
-    
+    let content: (AsyncLetLoadingPhase) -> any View
+        
     public var body: some View {
         if #available(iOS 15.0, *) {
-            content(phase)
+            AnyView(content(phase))
                 .redacted(if: shouldBeRedacted, style: redactedStyle)
                 .task(priority: priority) {
                     await performFetchRequestIfNeeded()
                 }
         } else {
-            content(phase)
+            AnyView(content(phase))
                 .redacted(if: shouldBeRedacted, style: redactedStyle)
                 .onAppear {
                     task = Task(priority: priority) {
@@ -93,5 +78,40 @@ public struct AsyncLetViewBuilder<Content: View, A, B>: View {
         case .success: return false
         case .failure: return redactedOnFailure
         }
+    }
+}
+
+#Preview {
+    if #available(iOS 14, *) {
+        return AsyncLetViewBuilder(
+            priority: .high,
+            redactedStyle: .never,
+            redactedOnFailure: true,
+            fetchA: {
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                return "Alpha"
+            },
+            fetchB: {
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                return "Beta"
+            },
+            content: { phase in
+                ZStack {
+                    switch phase {
+                    case .loading:
+                        Text("Loading")
+                    case .success(let a, let b):
+                        HStack {
+                            Text(a)
+                            Text(b)
+                        }
+                    case .failure:
+                        Text("FAILURE")
+                    }
+                }
+            }
+        )
+    } else {
+        return Text("err")
     }
 }
