@@ -7,18 +7,26 @@
 
 import SwiftUI
 
-struct NonLazyVGrid<T, Content:View>: View {
+public struct NonLazyVGrid<T, Content:View>: View {
     var columns: Int = 2
     var alignment: HorizontalAlignment = .center
     var spacing: CGFloat = 8
     let items: [T]
     @ViewBuilder var content: (T?) -> Content
+    
+    public init(columns: Int = 2, alignment: HorizontalAlignment = .center, spacing: CGFloat = 10, items: [T], @ViewBuilder content: @escaping (T?) -> Content) {
+        self.columns = columns
+        self.alignment = alignment
+        self.spacing = spacing
+        self.items = items
+        self.content = content
+    }
 
     private var rowCount: Int {
         Int((Double(items.count) / Double(columns)).rounded(.up))
     }
         
-    var body: some View {
+    public var body: some View {
         // Note: address if needed:
         // Non-constant range: argument must be an integer literal
         VStack(alignment: alignment, spacing: spacing, content: {
