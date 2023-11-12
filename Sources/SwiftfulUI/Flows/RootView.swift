@@ -7,8 +7,32 @@
 
 import SwiftUI
 
+/// App delegate life cycle actions for SwiftUI.
+///
+/// ### onApplicationDidAppear:
+///  When the app first appears. This is called when the SwiftUI View appears, which is after didFinishLaunchingWithOptions. There is no didFinishLaunchingWithOptions because that is triggered before SwiftUI renders.
+///
+///
+/// ### onApplicationWillEnterForeground:
+///   When the app transitions to active state. When the app will reactivate, this gets called immediately before applicationDidBecomeActive.
+///
+///
+/// ### onApplicationDidBecomeActive:
+///  When the app returns to active state after being in an inactive state.
+///
+///
+/// ### onApplicationWillResignActive:
+/// When the app transitions away from active state. Each time a temporary event, such as a phone call, happens this method gets called.
+///   
+///
+/// ### onApplicationDidEnterBackground:
+///  When the app enters the background but is still running. If the user is terminating the app, this is called immediately before applicationWillTerminate. The app will have approximately five seconds to perform tasks before the application terminates.
+///
+///
+/// ### onApplicationWillTerminate:
+///  When the app terminates. Events such as force quitting the iOS app or shutting down the device.
 public struct RootDelegate {
-    /// The first "onAppear" of the application. Similar to "didFinishLaunching".
+    
     var onApplicationDidAppear: (() -> Void)? = nil
     var onApplicationWillEnterForeground: ((Notification) -> Void)? = nil
     var onApplicationDidBecomeActive: ((Notification) -> Void)? = nil
@@ -33,7 +57,7 @@ public struct RootDelegate {
     }
 }
 
-/// Make this the Root view of your application to recieve UIApplicationDelegates in your SwiftUI View code.
+/// Make this the Root view of your application to recieve UIApplicationDelegate methods in your SwiftUI View.
 public struct RootView: View {
     
     let delegate: RootDelegate?
@@ -88,7 +112,13 @@ public struct RootView: View {
 
 #Preview("RootView") {
     RootView(
-        delegate: nil,
+        delegate: RootDelegate(
+            onApplicationDidAppear: nil,
+            onApplicationWillEnterForeground: nil,
+            onApplicationDidBecomeActive: nil,
+            onApplicationWillResignActive: nil,
+            onApplicationDidEnterBackground: nil,
+            onApplicationWillTerminate: nil),
         content: {
             Text("Home")
         }
