@@ -22,18 +22,26 @@ public struct AnyRecursiveView<T:Identifiable>: View {
     let selection: T?
     let items: [T]
     let recursiveItem: AnyRecursiveModel<T>?
-    let view: (T?) -> any View
+    let view: (T) -> any View
     
-    public init(selection: T?, items: [T], view: @escaping (T?) -> any View) {
+    public init(selection: T?, items: [T], view: @escaping (T) -> any View) {
         self.selection = selection
         self.items = items
         self.recursiveItem = try? items.asAnyRecursiveModelWithDepthOfOne()
         self.view = view
     }
 
-    public init(selection: T?, items: Range<T>, view: @escaping (T?) -> any View) where T : IntegerIdentifiable {
+    public init(selection: T?, items: Range<T>, view: @escaping (T) -> any View) where T : IntegerIdentifiable {
         self.selection = selection
         let array: [T] = Array(range: items)
+        self.items = array
+        self.recursiveItem = try? array.asAnyRecursiveModelWithDepthOfOne()
+        self.view = view
+    }
+    
+    public init(selection: Bool?, view: @escaping (T) -> any View) where T : BoolIdentifiable {
+        self.selection = .init(id: selection ?? false)
+        let array: [T] = [.init(id: false), .init(id: true)]
         self.items = array
         self.recursiveItem = try? array.asAnyRecursiveModelWithDepthOfOne()
         self.view = view
@@ -43,14 +51,18 @@ public struct AnyRecursiveView<T:Identifiable>: View {
         AnyConditionalView(
             showView1: selection?.id == items.first?.id,
             view1: {
-                AnyView(view(items.first))
+                if let item = items.first {
+                    AnyView(view(item))
+                } else {
+                    EmptyView()
+                }
             },
             view2: {
                 RecursiveView(
                     selection: selection,
                     items: recursiveItem?.children ?? [],
                     view: { value in
-                        AnyView(view(value?.value))
+                        AnyView(view(value.value))
                     }
                 )
             }
@@ -62,13 +74,17 @@ struct RecursiveView<T:Identifiable>: View {
     
     let selection: T?
     let items: [AnyRecursiveModel<T>]
-    let view: (AnyRecursiveModel<T>?) -> any View
+    let view: (AnyRecursiveModel<T>) -> any View
     
     var body: some View {
         AnyConditionalView(
             showView1: selection?.id == items.first?.id,
             view1: {
-                AnyView(view(items.first))
+                if let item = items.first {
+                    AnyView(view(item))
+                } else {
+                    EmptyView()
+                }
             },
             view2: {
                 if let children = items.first?.children {
@@ -129,6 +145,21 @@ extension Array {
     }
 }
 
+// MARK: BoolIdentifiable
+public protocol BoolIdentifiable: Identifiable where ID == Bool {
+    var id: Bool { get }
+    init(id: Bool)
+}
+
+extension Bool: BoolIdentifiable {
+    public var id: Bool {
+        self
+    }
+    public init(id: Bool) {
+        self = id
+    }
+}
+
 // MARK: PREVIEW
 
 fileprivate struct PreviewView: View {
@@ -155,6 +186,17 @@ fileprivate struct PreviewView: View {
         ZStack {
             // ParentView
             VStack(spacing: 20) {
+                // Example using Bool
+                AnyRecursiveView(selection: selectedIndex == 0) { value in
+                    // View
+                    Rectangle()
+                        .fill(value ? Color.red : Color.green)
+                        .overlay(
+                            Text(value.description)
+                        )
+                        .transition(AnyTransition.opacity)
+                }
+                
                 // Example using Int
                 AnyRecursiveView(selection: selectedIndex, items: 0..<4) { value in
                     // View
@@ -166,7 +208,7 @@ fileprivate struct PreviewView: View {
                             Color.yellow
                         )
                         .overlay(
-                            Text("\(value ?? 999)")
+                            Text("\(value)")
                         )
                         .transition(AnyTransition.slide)
                 }
@@ -175,14 +217,14 @@ fileprivate struct PreviewView: View {
                 AnyRecursiveView(selection: selection, items: questions) { value in
                     Rectangle()
                         .fill(
-                            value?.text == "one" ? Color.red :
-                                value?.text == "two" ? Color.blue :
-                                value?.text == "three" ? Color.orange :
-                                value?.text == "four" ? Color.green :
+                            value.text == "one" ? Color.red :
+                                value.text == "two" ? Color.blue :
+                                value.text == "three" ? Color.orange :
+                                value.text == "four" ? Color.green :
                                 Color.yellow
                         )
                         .overlay(
-                            Text(value?.text ?? "nah")
+                            Text(value.text)
                         )
                         .transition(AnyTransition.scale)
                 }
