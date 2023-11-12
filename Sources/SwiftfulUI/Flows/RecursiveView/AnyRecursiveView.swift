@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 // Notes:
-// ParentView - The implementation
-// AnyRecursiveView - Takes an array and makes it recursive
-// RecursiveView - Takes recursive data and displays it
-// AppView - 2 items in a ZStack
-// View - has the transition
+// 1. ParentView - The implementation
+// 2. AnyRecursiveView - Takes an array and makes it recursive
+// 3. RecursiveView - Takes recursive data and displays it
+// 4. AnyConditionalView - 2 items in a ZStack
+// 5. View - has the transition
 
 public typealias LazyZStack = AnyRecursiveView
 
@@ -153,9 +153,11 @@ fileprivate struct PreviewView: View {
         
     var body: some View {
         ZStack {
+            // ParentView
             VStack(spacing: 20) {
                 // Example using Int
                 AnyRecursiveView(selection: selectedIndex, items: 0..<4) { value in
+                    // View
                     Rectangle()
                         .fill(
                             value == 1 ? Color.red :
