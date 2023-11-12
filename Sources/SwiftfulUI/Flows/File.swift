@@ -9,6 +9,12 @@ import Foundation
 import SwiftUI
 
 
+// ParentView - The implementation
+// AnyRecursiveView - Takes an array and makes it recursive
+// RecursiveView - Takes recursive data and displays it
+// AppView - 2 items in a ZStack
+// View - has the transition
+
 //func eachFirst<FirstT: Collection, each T: Collection>(_ firstItem: FirstT, _ item: repeat each T) -> (FirstT.Element?, repeat (each T).Element?) {
 //    return (firstItem.first, repeat (each item).first)
 //}
@@ -21,21 +27,21 @@ struct AppView: View {
     let view2: () -> any View
     
     var body: some View {
-        ZStack {
-            ZStack {
+//        ZStack {
+//            ZStack {
                 if showView1 {
                     AnyView(view1())
                 }
-            }
-            .zIndex(showView1 ? 2 : 1)
+//            }
+//            .zIndex(showView1 ? 2 : 1)
             
-            ZStack {
+//            ZStack {
                 if !showView1 {
                     AnyView(view2())
                 }
-            }
-            .zIndex(showView1 ? 1 : 2)
-        }
+//            }
+//            .zIndex(showView1 ? 1 : 2)
+//        }
     }
 }
 
@@ -135,13 +141,13 @@ struct AnyRecursiveView<T:Identifiable>: View {
     
     let selection: T?
     let items: [T]
-    @State private var recursiveItems: [AnyRecursiveModel<T>]
+    let recursiveItems: [AnyRecursiveModel<T>]
     let view: (T?) -> any View
     
     init(selection: T?, items: [T], view: @escaping (T?) -> any View) {
         self.selection = selection
         self.items = items
-        self._recursiveItems = State(initialValue: convertToRecursiveModel(items))
+        self.recursiveItems = convertToRecursiveModel(items)
         self.view = view
     }
 
@@ -180,7 +186,7 @@ struct RecursiveView<T:Identifiable>: View {
                 if let children = items.first?.children {
                     RecursiveView(
                         selection: selection,
-                        items: items.first?.children ?? [],
+                        items: children,
                         view: { value in
                             AnyView(view(value))
                         }
