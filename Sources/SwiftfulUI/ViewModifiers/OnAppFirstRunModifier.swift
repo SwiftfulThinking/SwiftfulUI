@@ -13,10 +13,7 @@ struct OnAppFirstRunModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onAppear {
-                if UserDefaults.standard.bool(forKey: "appHasBeenLaunchedOnce") == false {
-                    action()
-                    UserDefaults.standard.set(true, forKey: "appHasBeenLaunchedOnce")
-                }
+                FirstRunManager.shared.executeFirstRunAction(action: action)
             }
     }
 }
@@ -26,3 +23,21 @@ extension View {
         modifier(OnAppFirstRunModifier(action: action))
     }
 }
+
+class FirstRunManager {
+    static let shared = FirstRunManager()
+    private var hasFirstRunActionExecuted = false
+
+    private init() {}
+
+    func executeFirstRunAction(action: () -> Void) {
+        if UserDefaults.standard.bool(forKey: "appHasBeenLaunchedOnce") || hasFirstRunActionExecuted {
+            return
+        }
+        
+        action()
+        hasFirstRunActionExecuted = true
+        UserDefaults.standard.set(true, forKey: "appHasBeenLaunchedOnce")
+    }
+}
+
