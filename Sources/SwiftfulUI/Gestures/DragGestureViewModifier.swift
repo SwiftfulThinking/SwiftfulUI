@@ -153,13 +153,20 @@ struct DragGestureViewModifier_Previews: PreviewProvider {
     static var previews: some View {
         RoundedRectangle(cornerRadius: 10)
             .frame(width: 300, height: 200)
-            .withDragGesture(resets: true, animation: .spring(), rotationMultiplier: 1.1, scaleMultiplier: 1.1) { dragOffset in
-                let tx = dragOffset.height
-                let ty = dragOffset.width
-            } onEnded: { dragOffset in
-                let tx = dragOffset.height
-                let ty = dragOffset.width
-            }
-
+            .withDragGesture(
+                [.vertical, .horizontal],
+                resets: true,
+                animation: .smooth,
+                rotationMultiplier: 1.1,
+                scaleMultiplier: 1.1,
+                onChanged: { dragOffset in
+                    let tx = dragOffset.height
+                    let ty = dragOffset.width
+                },
+                onEnded: { dragOffset in
+                    let tx = dragOffset.height
+                    let ty = dragOffset.width
+                }
+            )
     }
 }
