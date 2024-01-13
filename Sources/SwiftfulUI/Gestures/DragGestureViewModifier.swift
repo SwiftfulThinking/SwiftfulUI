@@ -19,6 +19,7 @@ struct DragGestureViewModifier: ViewModifier {
     let animation: Animation
     let rotationMultiplier: CGFloat
     let scaleMultiplier: CGFloat
+    let onChanged: ((_ dragOffset: CGSize) -> ())?
     let onEnded: ((_ dragOffset: CGSize) -> ())?
 
     init(
@@ -27,12 +28,14 @@ struct DragGestureViewModifier: ViewModifier {
         animation: Animation,
         rotationMultiplier: CGFloat = 0,
         scaleMultiplier: CGFloat = 0,
+        onChanged: ((_ dragOffset: CGSize) -> ())?,
         onEnded: ((_ dragOffset: CGSize) -> ())?) {
             self.axes = axes
             self.resets = resets
             self.animation = animation
             self.rotationMultiplier = rotationMultiplier
             self.scaleMultiplier = scaleMultiplier
+            self.onChanged = onChanged
             self.onEnded = onEnded
         }
         
@@ -45,6 +48,8 @@ struct DragGestureViewModifier: ViewModifier {
             .simultaneousGesture(
                 DragGesture(minimumDistance: 0, coordinateSpace: .global)
                     .onChanged({ value in
+                        onChanged?(value.translation)
+                        
                         withAnimation(animation) {
                             offset = value.translation
                             
@@ -68,6 +73,8 @@ struct DragGestureViewModifier: ViewModifier {
                                 lastOffset = CGSize(
                                     width: lastOffset.width + value.translation.width,
                                     height: lastOffset.height + value.translation.height)
+                            } else {
+                                onChanged?(offset)
                             }
                         }
                     })
@@ -134,8 +141,9 @@ public extension View {
         animation: Animation = .spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0.0),
         rotationMultiplier: CGFloat = 0,
         scaleMultiplier: CGFloat = 0,
+        onChanged: ((_ dragOffset: CGSize) -> ())? = nil,
         onEnded: ((_ dragOffset: CGSize) -> ())? = nil) -> some View {
-            modifier(DragGestureViewModifier(axes, resets: resets, animation: animation, rotationMultiplier: rotationMultiplier, scaleMultiplier: scaleMultiplier, onEnded: onEnded))
+            modifier(DragGestureViewModifier(axes, resets: resets, animation: animation, rotationMultiplier: rotationMultiplier, scaleMultiplier: scaleMultiplier, onChanged: onChanged, onEnded: onEnded))
     }
     
 }
@@ -148,6 +156,10 @@ struct DragGestureViewModifier_Previews: PreviewProvider {
             .withDragGesture(resets: true, animation: .spring(), rotationMultiplier: 1.1, scaleMultiplier: 1.1) { dragOffset in
                 let tx = dragOffset.height
                 let ty = dragOffset.width
+            } onEnded: { dragOffset in
+                let tx = dragOffset.height
+                let ty = dragOffset.width
             }
+
     }
 }
