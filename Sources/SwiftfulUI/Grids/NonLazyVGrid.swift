@@ -27,12 +27,10 @@ public struct NonLazyVGrid<T, Content:View>: View {
     }
         
     public var body: some View {
-        // Note: address if needed:
-        // Non-constant range: argument must be an integer literal
         VStack(alignment: alignment, spacing: spacing, content: {
-            ForEach(0..<rowCount) { rowIndex in
+            ForEach(Array(0..<rowCount), id: \.self) { rowIndex in
                 HStack(alignment: .top, spacing: spacing, content: {
-                    ForEach(0..<columns) { columnIndex in
+                    ForEach(Array(0..<columns), id: \.self) { columnIndex in
                         let index = (rowIndex * columns) + columnIndex
                         if index < items.count {
                             content(items[index])

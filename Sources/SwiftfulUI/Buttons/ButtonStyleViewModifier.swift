@@ -36,17 +36,17 @@ public enum ButtonType {
 public extension View {
     
     /// Wrap a View in a Button and add a custom ButtonStyle.
-    @MainActor
-    func asButton(scale: CGFloat = 0.95, opacity: Double = 1, brightness: Double = 0, action: @escaping @MainActor () -> Void) -> some View {
-        Button(action: action) {
+    func asButton(scale: CGFloat = 0.95, opacity: Double = 1, brightness: Double = 0, action: @escaping () -> Void) -> some View {
+        Button(action: {
+            action()
+        }, label: {
             self
-        }
+        })
         .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
     }
     
-    @MainActor
     @ViewBuilder
-    func asButton(_ type: ButtonType = .tap, action: @escaping @MainActor () -> Void) -> some View {
+    func asButton(_ type: ButtonType = .tap, action: @escaping () -> Void) -> some View {
         switch type {
         case .press:
             self.asButton(scale: 0.975, action: action)
@@ -74,6 +74,9 @@ public extension View {
             .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
         } else {
             self
+                .onAppear {
+                    print("‼️ SwiftfulUI Warning: URL is nil! \(#file) \(#line)")
+                }
         }
     }
     
@@ -81,26 +84,48 @@ public extension View {
 
 @available(iOS 14, *)
 struct ButtonStyleViewModifier_Previews: PreviewProvider {
+    
+    static private func someButtonLabel() -> some View {
+        Text("Hello")
+            .foregroundColor(.white)
+            .frame(height: 52)
+            .frame(maxWidth: .infinity)
+            .background(Color.blue)
+            .cornerRadius(10)
+    }
+    
     static var previews: some View {
-        VStack {
-            Text("Hello")
-                .foregroundColor(.white)
-                .padding()
-                .padding(.horizontal)
-                .background(Color.blue)
-                .cornerRadius(10)
-                .asButton {
-                    
-                }
+        ZStack {
+            Color.green.ignoresSafeArea()
             
-            Text("Hello")
-                .withFont(font: .headline, color: .white)
-                .padding()
-                .padding(.horizontal)
-                .withBackground(color: .red, cornerRadius: 10)
-                .asWebLink {
-                    URL(string: "https://www.google.com")
-                }
+            VStack(spacing: 16) {
+                someButtonLabel()
+                    .asButton {
+                        
+                    }
+                
+                someButtonLabel()
+                    .asButton(.tap, action: {
+                        
+                    })
+                
+                someButtonLabel()
+                    .asButton(.press, action: {
+                        
+                    })
+
+                someButtonLabel()
+                    .asButton(.opacity, action: {
+                        
+                    })
+
+                
+                someButtonLabel()
+                    .asWebLink {
+                        URL(string: "https://www.google.com")
+                    }
+            }
+            .padding()
         }
     }
 }

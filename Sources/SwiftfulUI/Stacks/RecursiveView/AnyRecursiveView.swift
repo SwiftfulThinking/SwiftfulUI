@@ -197,6 +197,26 @@ fileprivate struct PreviewView: View {
                         .transition(AnyTransition.opacity)
                 }
                 
+                // Example using Bool
+                LazyZStack(selection: selectedIndex == 0) { value in
+                    // View
+                    if value {
+                        Rectangle()
+                            .fill(Color.red)
+                            .overlay(
+                                Text(value.description)
+                            )
+                            .transition(AnyTransition.slide)
+                    } else {
+                        Rectangle()
+                            .fill(Color.green)
+                            .overlay(
+                                Text(value.description)
+                            )
+                            .transition(AnyTransition.slide)
+                    }
+                }
+                
                 // Example using Int
                 AnyRecursiveView(selection: selectedIndex, items: 0..<4) { value in
                     // View

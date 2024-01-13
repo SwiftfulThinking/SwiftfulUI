@@ -111,17 +111,47 @@ public struct RootView: View {
 }
 
 #Preview("RootView") {
-    RootView(
-        delegate: RootDelegate(
+    ZStack {
+        RootView(
+            delegate: RootDelegate(
+                onApplicationDidAppear: {
+                    
+                },
+                onApplicationWillEnterForeground: { notification in
+                    
+                },
+                onApplicationDidBecomeActive: { notification in
+                    
+                },
+                onApplicationWillResignActive: { notification in
+                    
+                },
+                onApplicationDidEnterBackground: { notification in
+                    
+                },
+                onApplicationWillTerminate: { notification in
+                    
+                }
+            ),
+            content: {
+                Text("Home")
+            }
+        )
+        
+        let delegate = RootDelegate(
             onApplicationDidAppear: nil,
             onApplicationWillEnterForeground: nil,
             onApplicationDidBecomeActive: nil,
             onApplicationWillResignActive: nil,
             onApplicationDidEnterBackground: nil,
-            onApplicationWillTerminate: nil),
-        content: {
-            Text("Home")
-        }
-    )
+            onApplicationWillTerminate: nil)
+        
+        RootView(
+            delegate: delegate,
+            content: {
+                Text("Home")
+            }
+        )
+    }
 }
 

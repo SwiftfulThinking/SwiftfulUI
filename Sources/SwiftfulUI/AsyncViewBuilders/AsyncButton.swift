@@ -34,16 +34,16 @@ struct AsyncButton<Label: View>: View {
 #Preview("AsyncButton") {
     AsyncButton {
         try? await Task.sleep(nanoseconds: 2_000_000_000)
-    } label: { isLoading in
+    } label: { isPerformingAction in
         ZStack {
-            if isLoading {
+            if isPerformingAction {
                 if #available(iOS 14.0, *) {
                     ProgressView()
                 }
             }
             
             Text("Hello, world!")
-                .opacity(isLoading ? 0 : 1)
+                .opacity(isPerformingAction ? 0 : 1)
         }
         .foregroundColor(.white)
         .font(.headline)
@@ -51,7 +51,7 @@ struct AsyncButton<Label: View>: View {
         .frame(maxWidth: .infinity)
         .background(Color.blue)
         .cornerRadius(10)
-        .disabled(isLoading)
+        .disabled(isPerformingAction)
     }
     .padding()
 }
