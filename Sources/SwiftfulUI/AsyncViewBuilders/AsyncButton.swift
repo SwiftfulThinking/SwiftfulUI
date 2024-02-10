@@ -10,14 +10,19 @@ import SwiftUI
 
 // credit: Ricky Stone
 
-struct AsyncButton<Label: View>: View {
+public struct AsyncButton<Label: View>: View {
     let action: () async -> Void
     let label: (Bool) -> Label
     @State private var task: Task<(), Never>? = nil
+    
+    public init(action: @escaping () async -> Void, label: @escaping (Bool) -> Label) {
+        self.action = action
+        self.label = label
+    }
 
-    var body: some View {
+    public var body: some View {
         Button(action: {
-            task = Task {
+            task = Task { @MainActor in
                 await action()
                 task = nil
             }
