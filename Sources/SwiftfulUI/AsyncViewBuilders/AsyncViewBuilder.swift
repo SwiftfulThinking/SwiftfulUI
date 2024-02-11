@@ -30,7 +30,7 @@ public struct AsyncViewBuilder<T>: View {
     let fetch: () async throws -> T
     let content: (AsyncLoadingPhase) -> any View
     
-    public init(priority: TaskPriority, redactedStyle: RedactedStyle, redactedOnFailure: Bool, fetch: @escaping () async throws -> T, content: @escaping (AsyncLoadingPhase) -> any View) {
+    public init(priority: TaskPriority = .userInitiated, redactedStyle: RedactedStyle = .never, redactedOnFailure: Bool = false, fetch: @escaping () async throws -> T, content: @escaping (AsyncLoadingPhase) -> any View) {
         self.priority = priority
         self.redactedStyle = redactedStyle
         self.redactedOnFailure = redactedOnFailure

@@ -32,7 +32,7 @@ public struct AsyncLetViewBuilder<A, B>: View {
     let fetchB: () async throws -> B
     let content: (AsyncLetLoadingPhase) -> any View
     
-    public init(priority: TaskPriority, redactedStyle: RedactedStyle, redactedOnFailure: Bool, fetchA: @escaping () async throws -> A, fetchB: @escaping () async throws -> B, content: @escaping (AsyncLetLoadingPhase) -> any View) {
+    public init(priority: TaskPriority = .userInitiated, redactedStyle: RedactedStyle = .never, redactedOnFailure: Bool = false, fetchA: @escaping () async throws -> A, fetchB: @escaping () async throws -> B, content: @escaping (AsyncLetLoadingPhase) -> any View) {
         self.priority = priority
         self.redactedStyle = redactedStyle
         self.redactedOnFailure = redactedOnFailure
