@@ -15,6 +15,7 @@ struct DragGestureViewModifier: ViewModifier {
     @State private var scale: CGFloat = 1
 
     let axes: Axis.Set
+    let minimumDistance: CGFloat
     let resets: Bool
     let animation: Animation
     let rotationMultiplier: CGFloat
@@ -24,6 +25,7 @@ struct DragGestureViewModifier: ViewModifier {
 
     init(
         _ axes: Axis.Set = [.horizontal, .vertical],
+        minimumDistance: CGFloat = 0,
         resets: Bool,
         animation: Animation,
         rotationMultiplier: CGFloat = 0,
@@ -31,6 +33,7 @@ struct DragGestureViewModifier: ViewModifier {
         onChanged: ((_ dragOffset: CGSize) -> ())?,
         onEnded: ((_ dragOffset: CGSize) -> ())?) {
             self.axes = axes
+            self.minimumDistance = minimumDistance
             self.resets = resets
             self.animation = animation
             self.rotationMultiplier = rotationMultiplier
@@ -46,7 +49,7 @@ struct DragGestureViewModifier: ViewModifier {
             .offset(getOffset(offset: lastOffset))
             .offset(getOffset(offset: offset))
             .simultaneousGesture(
-                DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                DragGesture(minimumDistance: minimumDistance, coordinateSpace: .global)
                     .onChanged({ value in
                         onChanged?(value.translation)
                         
