@@ -29,6 +29,14 @@ public struct AsyncViewBuilder<T>: View {
     var redactedOnFailure: Bool = false
     let fetch: () async throws -> T
     let content: (AsyncLoadingPhase) -> any View
+    
+    public init(priority: TaskPriority, redactedStyle: RedactedStyle, redactedOnFailure: Bool, fetch: @escaping () async throws -> T, content: @escaping (AsyncLoadingPhase) -> any View) {
+        self.priority = priority
+        self.redactedStyle = redactedStyle
+        self.redactedOnFailure = redactedOnFailure
+        self.fetch = fetch
+        self.content = content
+    }
         
     public var body: some View {
         if #available(iOS 15.0, *) {

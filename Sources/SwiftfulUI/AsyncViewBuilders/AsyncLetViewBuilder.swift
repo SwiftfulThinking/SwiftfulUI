@@ -31,6 +31,15 @@ public struct AsyncLetViewBuilder<A, B>: View {
     let fetchA: () async throws -> A
     let fetchB: () async throws -> B
     let content: (AsyncLetLoadingPhase) -> any View
+    
+    public init(priority: TaskPriority, redactedStyle: RedactedStyle, redactedOnFailure: Bool, fetchA: @escaping () async throws -> A, fetchB: @escaping () async throws -> B, content: @escaping (AsyncLetLoadingPhase) -> any View) {
+        self.priority = priority
+        self.redactedStyle = redactedStyle
+        self.redactedOnFailure = redactedOnFailure
+        self.fetchA = fetchA
+        self.fetchB = fetchB
+        self.content = content
+    }
         
     public var body: some View {
         if #available(iOS 15.0, *) {
