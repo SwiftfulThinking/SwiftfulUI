@@ -140,13 +140,14 @@ public extension View {
     ///
     func withDragGesture(
         _ axes: Axis.Set = [.horizontal, .vertical],
+        minimumDistance: CGFloat = 0,
         resets: Bool = true,
         animation: Animation = .spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0.0),
         rotationMultiplier: CGFloat = 0,
         scaleMultiplier: CGFloat = 0,
         onChanged: ((_ dragOffset: CGSize) -> ())? = nil,
         onEnded: ((_ dragOffset: CGSize) -> ())? = nil) -> some View {
-            modifier(DragGestureViewModifier(axes, resets: resets, animation: animation, rotationMultiplier: rotationMultiplier, scaleMultiplier: scaleMultiplier, onChanged: onChanged, onEnded: onEnded))
+            modifier(DragGestureViewModifier(axes, minimumDistance: minimumDistance, resets: resets, animation: animation, rotationMultiplier: rotationMultiplier, scaleMultiplier: scaleMultiplier, onChanged: onChanged, onEnded: onEnded))
     }
     
 }
