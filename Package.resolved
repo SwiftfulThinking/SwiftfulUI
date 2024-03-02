@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SwiftfulRecursiveUI",
+        "repositoryURL": "https://github.com/SwiftfulThinking/SwiftfulRecursiveUI.git",
+        "state": {
+          "branch": null,
+          "revision": "3d2d5ac6efe70874fb5ffb2f8e1d5ccd457f4366",
+          "version": "1.0.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
