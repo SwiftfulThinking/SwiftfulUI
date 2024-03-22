@@ -31,7 +31,7 @@ public struct ExpandingTextField: View {
 	var placeholder: String
 	@Binding private var text: String
 	
-	init(_ placeholder: String, text: Binding<String>) {
+	public init(_ placeholder: String, text: Binding<String>) {
 		self.placeholder = placeholder
 		self._text = text
 	}
