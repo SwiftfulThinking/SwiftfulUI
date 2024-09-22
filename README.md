@@ -22,4 +22,4 @@ A library of reusable SwiftUI components that are missing from the SwiftUI frame
 - [TabBar](https://github.com/SwiftfulThinking/SwiftfulUI/wiki/TabBar)
 - [Toggles](https://github.com/SwiftfulThinking/SwiftfulUI/wiki/Toggles)
 - [ViewModifiers](https://github.com/SwiftfulThinking/SwiftfulUI/wiki/ViewModifiers)
-- [Views](https://github.com/SwiftfulThinking/SwiftfulUI/wiki/Views)
+- [Views](https://github.com/SwiftfulThinking/SwiftfulUI/wiki/Views-(RootView,-CountdownViewBuilder,-etc.))
