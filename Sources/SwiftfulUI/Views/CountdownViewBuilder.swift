@@ -51,7 +51,8 @@ public struct CountdownViewBuilder<Content:View>: View {
 struct CountdownViewBuilder_Previews: PreviewProvider {
     
     static let endTime = Date().addingTimeInterval(60 * 60 * 2)
-    
+    static let endTime2 = Date().addingTimeInterval(60 * 60 * 24 * 7)
+
     static var previews: some View {
         VStack(spacing: 20) {
             CountdownViewBuilder(
@@ -75,6 +76,17 @@ struct CountdownViewBuilder_Previews: PreviewProvider {
                     
                 }
             )
+            
+            CountdownViewBuilder(
+                endTime: endTime2,
+                displayOption: .timeAs_d_h_m,
+                content: { string in
+                    Text(string)
+                },
+                onTimerEnded: {
+                    
+                }
+            )
         }
     }
 }
@@ -82,7 +94,7 @@ struct CountdownViewBuilder_Previews: PreviewProvider {
 extension Double {
     
     public enum HoursMinutesSecondsDisplayOption {
-        case timeAs_00_00_00, timeAs_h_m_s
+        case timeAs_00_00_00, timeAs_h_m_s, timeAs_d_h_m
         
         public func stringValue(of value: Double) -> String {
             switch self {
@@ -90,6 +102,8 @@ extension Double {
                 return value.asHoursMinutesSeconds_as_00_00_00
             case .timeAs_h_m_s:
                 return value.asHoursMinutesSeconds_as_h_m_s
+            case .timeAs_d_h_m:
+                return value.asDaysHoursMinutes
             }
         }
     }
@@ -128,4 +142,25 @@ extension Double {
         return timeString.isEmpty ? "0s" : timeString
     }
     
+    public var asDaysHoursMinutes: String {
+        let days = Int(self) / 86400
+        let hours = (Int(self) % 86400) / 3600
+        let minutes = (Int(self) % 3600) / 60
+        
+        var timeString = ""
+        
+        if days > 0 {
+            timeString += "\(days)d "
+        }
+        
+        if hours > 0 || days > 0 {
+            timeString += "\(hours)h "
+        }
+        
+        if minutes > 0 || hours > 0 || days > 0 {
+            timeString += "\(minutes)m"
+        }
+        
+        return timeString.isEmpty ? "0m" : timeString
+    }
 }
