@@ -1,4 +1,5 @@
 # SwiftfulUI
+> **Minimum iOS Support:** This library supports iOS 13 and later.
 
 YouTube Tutorial: https://www.youtube.com/watch?v=KjmtLrs6ICM&list=PLwvDm4VfkdphPRGbtiY-X3IZsUXFi6595&index=5
 
