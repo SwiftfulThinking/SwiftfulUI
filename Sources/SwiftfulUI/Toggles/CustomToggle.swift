@@ -15,19 +15,16 @@ public struct CustomToggle: View {
     let width: CGFloat
     let pinColor: Color
     let backgroundColor: Color
-    let haptic: HapticOption
-    
+
     public init(
         isOn: Binding<Bool>,
         width: CGFloat = 64,
         pinColor: Color = .blue,
-        backgroundColor: Color = Color.gray.opacity(0.3),
-        haptic: HapticOption = .never) {
+        backgroundColor: Color = Color.gray.opacity(0.3)) {
             self._isOn = isOn
             self.width = width
             self.pinColor = pinColor
             self.backgroundColor = backgroundColor
-            self.haptic = haptic
     }
     
     public var body: some View {
@@ -38,7 +35,6 @@ public struct CustomToggle: View {
             .frame(width: width, height: width / 1.8, alignment: isOn ? .trailing : .leading)
             .withBackground(color: backgroundColor, cornerRadius: 100)
             .animation(.spring(), value: isOn)
-            .withHaptic(option: haptic, onChangeOf: isOn)
             .onTapGesture {
                 isOn.toggle()
             }
@@ -53,7 +49,7 @@ struct CustomToggle_Previews: PreviewProvider {
         var body: some View {
             VStack {
                 CustomToggle(isOn: $isOn)
-                CustomToggle(isOn: $isOn, width: 100, pinColor: .gray, backgroundColor: .black, haptic: .selection)
+                CustomToggle(isOn: $isOn, width: 100, pinColor: .gray, backgroundColor: .black)
                 CustomToggle(isOn: $isOn, pinColor: .white, backgroundColor: isOn ? .green : .gray.opacity(0.3))
                 CustomToggle(isOn: $isOn, pinColor: isOn ? .red : .white, backgroundColor: isOn ? .blue : .gray.opacity(0.3))
             }
