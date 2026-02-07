@@ -33,9 +33,9 @@ struct HighlightButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .overlay {
+            .overlay(
                 configuration.isPressed ? Color.accentColor.opacity(0.4) : Color.accentColor.opacity(0)
-            }
+            )
             .scaleEffect(configuration.isPressed ? 0.975 : 1)
             .animation(.smooth, value: configuration.isPressed)
     }

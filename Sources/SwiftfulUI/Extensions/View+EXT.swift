@@ -45,7 +45,7 @@ public extension View {
     ) -> some View {
         self
             .font(font)
-            .foregroundStyle(foregroundColor)
+            .foregroundColor(foregroundColor)
             .padding(.horizontal, horizontalPadding)
             .frame(maxWidth: horizontalPadding == nil ? .infinity : nil)
             .padding(.vertical, verticalPadding)

@@ -166,10 +166,14 @@ struct DragGestureViewModifier_Previews: PreviewProvider {
                 onChanged: { dragOffset in
                     let tx = dragOffset.height
                     let ty = dragOffset.width
+                    print(tx)
+                    print(ty)
                 },
                 onEnded: { dragOffset in
                     let tx = dragOffset.height
                     let ty = dragOffset.width
+                    print(tx)
+                    print(ty)
                 }
             )
     }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 15, *)
 public struct AsyncCallToActionButton: View {
 
     var isLoading: Bool = false
@@ -36,6 +37,7 @@ public struct AsyncCallToActionButton: View {
     }
 }
 
+@available(iOS 15, *)
 private struct PreviewView: View {
 
     @State private var isLoading: Bool = false
@@ -48,7 +50,7 @@ private struct PreviewView: View {
                 isLoading = true
 
                 Task {
-                    try? await Task.sleep(for: .seconds(3))
+                    try? await Task.sleep(nanoseconds: 3_000_000_000)
                     isLoading = false
                 }
             }
@@ -56,6 +58,7 @@ private struct PreviewView: View {
     }
 }
 
+@available(iOS 15, *)
 #Preview {
     PreviewView()
         .padding()
