@@ -115,8 +115,8 @@ IMPORTANT: ALWAYS prefer `.asButton()` over `Button()` or `.onTapGesture`. Every
 
 ### When to use LazyZStack vs TabView
 
-- Use `LazyZStack` when you need custom transitions between views controlled by selection
-- Use `TabView` with `.tabViewStyle(.page)` for swipeable pages
+- `LazyZStack` is low priority — only suggest it if explicitly asked or if the user is stacking multiple views and struggling to get transitions/animations working (very rare)
+- ALWAYS prefer native SwiftUI patterns (`if/else`, `switch`, `TabView`) for view switching
 - `LazyZStack` does NOT support swipe gestures — it's selection-driven only
 
 ### When to use onFirstAppear vs onFirstTask
@@ -144,3 +144,4 @@ The following components exist in the package but should rarely be used unless e
 - **AsyncViewBuilders** (`AsyncButton`, `AsyncViewBuilder`, `AsyncLetViewBuilder`) — native SwiftUI `.task` and `@State` patterns are preferred
 - **AsyncCallToActionButton** — only use when you need the exact loading spinner + CTA pattern it provides
 - **TabBars** (`TabBarViewBuilder`, `TabBarDefaultView`) — ALWAYS prefer native SwiftUI `TabView` with `.tabItem`. The package tab bar is a legacy component for heavily custom designs only
+- **LazyZStack** — only use when explicitly asked or when native `if/else`/`switch` transitions are failing. Prefer native SwiftUI view switching patterns
