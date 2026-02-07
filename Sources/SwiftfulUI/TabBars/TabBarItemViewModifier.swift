@@ -16,7 +16,7 @@ struct TabBarItemsPreferenceKey: PreferenceKey {
     }
 }
 
-struct TabBarItemViewModifer: ViewModifier {
+struct TabBarItemViewModifier: ViewModifier {
     
     @State private var didLoad: Bool = false
     let tab: AnyHashable
@@ -41,7 +41,7 @@ public extension View {
     
     /// Tag a View with a value. Use selection to determine which tab is currently displaying.
     func tabBarItem(tab: AnyHashable, selection: AnyHashable) -> some View {
-        modifier(TabBarItemViewModifer(tab: tab, selection: selection))
+        modifier(TabBarItemViewModifier(tab: tab, selection: selection))
     }
     
 }

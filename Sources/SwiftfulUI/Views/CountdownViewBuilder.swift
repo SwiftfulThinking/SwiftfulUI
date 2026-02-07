@@ -1,6 +1,6 @@
 //
-//  SwiftUIView.swift
-//  
+//  CountdownViewBuilder.swift
+//  SwiftfulUI
 //
 //  Created by Nick Sarno on 12/9/22.
 //
@@ -41,7 +41,7 @@ public struct CountdownViewBuilder<Content:View>: View {
             .onAppear {
                 timeRemaining = endTime.timeIntervalSince(Date())
             }
-            .onNotificationRecieved(name: UIApplication.didBecomeActiveNotification, action: { _ in
+            .onNotificationReceived(name: UIApplication.didBecomeActiveNotification, action: { _ in
                 timeRemaining = endTime.timeIntervalSince(Date())
             })
     }

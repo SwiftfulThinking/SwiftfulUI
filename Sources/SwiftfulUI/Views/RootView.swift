@@ -57,7 +57,7 @@ public struct RootDelegate {
     }
 }
 
-/// Make this the Root view of your application to recieve UIApplicationDelegate methods in your SwiftUI View.
+/// Make this the Root view of your application to receive UIApplicationDelegate methods in your SwiftUI View.
 public struct RootView: View {
     
     let delegate: RootDelegate?
@@ -76,31 +76,31 @@ public struct RootView: View {
         .onFirstAppear {
             delegate?.onApplicationDidAppear?()
         }
-        .onNotificationRecieved(
+        .onNotificationReceived(
             name: UIApplication.willEnterForegroundNotification,
             action: { notification in
                 delegate?.onApplicationWillEnterForeground?(notification)
             }
         )
-        .onNotificationRecieved(
+        .onNotificationReceived(
             name: UIApplication.didBecomeActiveNotification,
             action: { notification in
                 delegate?.onApplicationDidBecomeActive?(notification)
             }
         )
-        .onNotificationRecieved(
+        .onNotificationReceived(
             name: UIApplication.willResignActiveNotification,
             action: { notification in
                 delegate?.onApplicationWillResignActive?(notification)
             }
         )
-        .onNotificationRecieved(
+        .onNotificationReceived(
             name: UIApplication.didEnterBackgroundNotification,
             action: { notification in
                 delegate?.onApplicationDidEnterBackground?(notification)
             }
         )
-        .onNotificationRecieved(
+        .onNotificationReceived(
             name: UIApplication.willTerminateNotification,
             action: { notification in
                 delegate?.onApplicationWillTerminate?(notification)

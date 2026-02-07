@@ -1,6 +1,6 @@
 //
-//  FontAnimateableViewModifier.swift
-//  
+//  FontAnimatableViewModifier.swift
+//  SwiftfulUI
 //
 //  Created by Nick Sarno on 4/3/22.
 //
@@ -33,7 +33,7 @@ public extension View {
     
 }
 
-struct FontAnimateableViewModifier_Previews: PreviewProvider {
+struct FontAnimatableViewModifier_Previews: PreviewProvider {
     
     struct PreviewView: View {
         @State private var isActive: Bool = false

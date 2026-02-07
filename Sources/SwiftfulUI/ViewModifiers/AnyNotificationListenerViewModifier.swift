@@ -11,20 +11,20 @@ import SwiftUI
 struct AnyNotificationListenerViewModifier: ViewModifier {
     
     let notificationName: Notification.Name
-    let onNotificationRecieved: @MainActor (Notification) -> Void
+    let onNotificationReceived: @MainActor (Notification) -> Void
     
     func body(content: Content) -> some View {
         content
             .onReceive(NotificationCenter.default.publisher(for: notificationName), perform: { notification in
-                onNotificationRecieved(notification)
+                onNotificationReceived(notification)
             })
     }
 }
 
 extension View {
     
-    public func onNotificationRecieved(name: Notification.Name, action: @MainActor @escaping (Notification) -> Void) -> some View {
-        modifier(AnyNotificationListenerViewModifier(notificationName: name, onNotificationRecieved: action))
+    public func onNotificationReceived(name: Notification.Name, action: @MainActor @escaping (Notification) -> Void) -> some View {
+        modifier(AnyNotificationListenerViewModifier(notificationName: name, onNotificationReceived: action))
     }
     
 }

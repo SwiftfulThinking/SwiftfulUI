@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  NonLazyHGrid.swift
+//  SwiftfulUI
 //
 //  Created by Nick Sarno on 1/13/24.
 //
