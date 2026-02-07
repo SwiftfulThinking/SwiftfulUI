@@ -407,6 +407,10 @@ See the SwiftUI Previews within source files for example implementations.
 
 </details>
 
+## Claude Code
+
+This package includes a `.claude/swiftful-ui-rules.md` with usage guidelines, component selection advice, and integration patterns for projects using [Claude Code](https://claude.ai/claude-code).
+
 ## Platform Support
 
 - **iOS 13.0+**
