@@ -107,6 +107,12 @@ IMPORTANT: ALWAYS prefer `.asButton()` over `Button()` or `.onTapGesture`. Every
 - Pair with `.asButton(.press)` for the press animation
 - Do NOT use for list rows, navigation items, or icon buttons
 
+### When to use ifSatisfiesCondition()
+
+- ONLY use `.ifSatisfiesCondition()` for values that do NOT change while the view is on screen (e.g. `isDev`, `isiPad`, feature flags)
+- NEVER use it for dynamic state that may toggle or animate — use native `if/else` or ternary operators instead
+- The modifier captures `Self` before the condition is evaluated, which breaks SwiftUI's diffing and animation system for changing values
+
 ### When to use tappableBackground()
 
 - ALWAYS add `.tappableBackground()` before `.asButton()` if the view has transparent areas
