@@ -28,7 +28,7 @@ Text("Save")
 .removeListRowFormatting() // removes List row insets and background
 .callToActionButton()     // full-width styled CTA (font, color, padding, cornerRadius)
 .ifSatisfiesCondition(bool) { $0.opacity(0.5) }  // conditional modifier
-.ifSatisfiesCondition(bool) { $0.padding(20) } else: { $0.padding(8) }  // with else
+.ifSatisfiesCondition(bool) { $0.hidden() } else: { $0.overlay(Badge()) }  // with else
 ```
 
 ## View Modifiers
@@ -113,6 +113,7 @@ IMPORTANT: ALWAYS prefer `.asButton()` over `Button()` or `.onTapGesture`. Every
 - ONLY use `.ifSatisfiesCondition()` for values that do NOT change while the view is on screen (e.g. `isDev`, `isiPad`, feature flags)
 - NEVER use it for dynamic state that may toggle or animate — use native `if/else` or ternary operators instead
 - The modifier captures `Self` before the condition is evaluated, which breaks SwiftUI's diffing and animation system for changing values
+- ALWAYS prefer ternary operators when the condition controls a single parameter value (e.g. `.padding(isDev ? 20 : 8)`) — only use `ifSatisfiesCondition` when you need entirely different modifier chains that can't be expressed inline
 
 ### When to use tappableBackground()
 
