@@ -306,6 +306,90 @@ FlipView(isFlipped: $isFlipped, front: {
 
 </details>
 
+## Progress Bars
+
+<details>
+<summary> Details (Click to expand) </summary>
+<br>
+
+Customizable progress bar with support for any numeric range (iOS 15+).
+
+```swift
+// Basic usage (0 to 100)
+CustomProgressBar(
+    selection: 55,
+    range: 0...100
+)
+
+// With custom colors
+CustomProgressBar(
+    selection: progress,
+    range: 0...100,
+    backgroundColor: Color.gray.opacity(0.3),
+    foregroundColor: .blue,
+    cornerRadius: 100,
+    height: 8
+)
+
+// With gradient foreground
+CustomProgressBar(
+    selection: progress,
+    range: 0...100,
+    foreground: AnyShapeStyle(
+        LinearGradient(colors: [.blue, .purple], startPoint: .leading, endPoint: .trailing)
+    )
+)
+```
+
+</details>
+
+## LazyZStack
+
+<details>
+<summary> Details (Click to expand) </summary>
+<br>
+
+A ZStack that lazily renders views based on a selection, with built-in support for SwiftUI transitions. Only the selected view is rendered (or optionally allows simultaneous rendering for transition animations).
+
+```swift
+// With Identifiable items
+LazyZStack(
+    allowSimultaneous: true,
+    selection: selectedItem,
+    items: items
+) { item in
+    ItemView(item: item)
+        .transition(.slide)
+}
+
+// With Int selection
+LazyZStack(
+    allowSimultaneous: true,
+    selection: selectedIndex,
+    items: 0..<4
+) { index in
+    PageView(index: index)
+        .transition(.slide)
+}
+
+// With Bool selection
+LazyZStack(
+    allowSimultaneous: false,
+    selection: isShowingDetail
+) { (value: Bool) in
+    if value {
+        DetailView()
+    } else {
+        ListView()
+    }
+}
+```
+
+- `allowSimultaneous: true` — both old and new views render during transitions
+- `allowSimultaneous: false` — only the selected view renders at a time
+
+</details>
+
 ## Other Components
 
 <details>
@@ -315,9 +399,7 @@ FlipView(isFlipped: $isFlipped, front: {
 - **Backgrounds & Borders** — Fill, border, and gradient background modifiers
 - **Fonts** — Custom font modifiers with animation support
 - **GeometryReaders** — Frame and location readers
-- **Progress Bars** — Custom progress bar view
 - **Redacted** — Redacted/skeleton loading modifier
-- **Stacks** — LazyZStack for deferred view loading
 - **TabBars** — Customizable tab bar with TabBarItem support
 - **Toggles** — Custom toggle view
 
