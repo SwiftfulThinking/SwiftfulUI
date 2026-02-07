@@ -130,9 +130,19 @@ Text("Subscribe")
 <br>
 
 ```swift
-// Execute action only on first appear
+// Execute action only on first appear (sync)
 myView.onFirstAppear {
     loadData()
+}
+
+// Execute async action only on first appear (iOS 15+)
+myView.onFirstTask {
+    await fetchData()
+}
+
+// Execute action only on first disappear
+myView.onFirstDisappear {
+    cleanup()
 }
 
 // Listen for NotificationCenter notifications
@@ -143,7 +153,7 @@ myView.onNotificationReceived(name: .myNotification) { notification in
 // Stretchy header effect
 ScrollView {
     myHeaderView
-        .stretchyHeader(startingHeight: 300)
+        .asStretchyHeader(startingHeight: 300)
 }
 ```
 
