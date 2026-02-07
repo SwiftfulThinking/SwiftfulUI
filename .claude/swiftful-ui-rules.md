@@ -94,7 +94,7 @@ LazyZStack(allowSimultaneous: true, selection: selectedItem, items: items) { ite
 
 ### Button style selection
 
-IMPORTANT: Default to `.press` for most interactive elements. Only use alternatives for specific UX reasons.
+IMPORTANT: ALWAYS prefer `.asButton()` over `Button()` or `.onTapGesture`. Every tappable element in the app should use `.asButton()` for consistent styling and behavior. Default to `.press` for most interactive elements.
 
 - **CTAs, primary actions:** `.asButton(.press)` — standard press feedback
 - **List rows, settings items:** `.asButton(.highlight)` — accent overlay for row-style taps
@@ -127,6 +127,20 @@ IMPORTANT: Default to `.press` for most interactive elements. Only use alternati
 
 ### When to use NonLazyVGrid vs LazyVGrid
 
-- Use `NonLazyVGrid` when all items must render immediately (small lists, layout-dependent content)
-- Use `LazyVGrid` (SwiftUI built-in) for large or infinite lists
-- `NonLazyVGrid` is best for < 50 items where lazy loading adds unnecessary complexity
+- ALWAYS prefer native SwiftUI `LazyVGrid`/`LazyHGrid` by default
+- Use `NonLazyVGrid`/`NonLazyHGrid` only when there are < 9 lightweight items that can load synchronously (no heavy async tasks)
+- Do NOT use `NonLazyVGrid` for lists with images, network-loaded content, or unbounded data
+
+### ScrollView components
+
+- ALWAYS prefer native SwiftUI scroll APIs (`.scrollPosition`, `.scrollTargetLayout`, `.scrollIndicators`, etc.)
+- The package's `ScrollViewWithOnScrollChanged` is a legacy fallback for apps targeting older OS versions
+- For new projects targeting iOS 17+, never use the package scroll views
+
+### Low-priority components
+
+The following components exist in the package but should rarely be used unless explicitly requested:
+
+- **AsyncViewBuilders** (`AsyncButton`, `AsyncViewBuilder`, `AsyncLetViewBuilder`) — native SwiftUI `.task` and `@State` patterns are preferred
+- **AsyncCallToActionButton** — only use when you need the exact loading spinner + CTA pattern it provides
+- **TabBars** (`TabBarViewBuilder`, `TabBarDefaultView`) — ALWAYS prefer native SwiftUI `TabView` with `.tabItem`. The package tab bar is a legacy component for heavily custom designs only
