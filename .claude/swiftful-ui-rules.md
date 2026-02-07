@@ -28,6 +28,7 @@ Text("Save")
 .removeListRowFormatting() // removes List row insets and background
 .callToActionButton()     // full-width styled CTA (font, color, padding, cornerRadius)
 .ifSatisfiesCondition(bool) { $0.opacity(0.5) }  // conditional modifier
+.ifSatisfiesCondition(bool) { $0.padding(20) } else: { $0.padding(8) }  // with else
 ```
 
 ## View Modifiers
