@@ -29,8 +29,20 @@ struct ButtonStyleViewModifier: ButtonStyle {
 
 }
 
+struct HighlightButtonStyle: ButtonStyle {
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .overlay {
+                configuration.isPressed ? Color.accentColor.opacity(0.4) : Color.accentColor.opacity(0)
+            }
+            .scaleEffect(configuration.isPressed ? 0.975 : 1)
+            .animation(.smooth, value: configuration.isPressed)
+    }
+}
+
 public enum ButtonType {
-    case press, opacity, tap
+    case press, highlight, opacity, tap
 }
 
 public extension View {
@@ -50,6 +62,13 @@ public extension View {
         switch type {
         case .press:
             self.asButton(scale: 0.975, action: action)
+        case .highlight:
+            Button(action: {
+                action()
+            }, label: {
+                self
+            })
+            .buttonStyle(HighlightButtonStyle())
         case .opacity:
             self.asButton(scale: 1, opacity: 0.85, action: action)
         case .tap:
