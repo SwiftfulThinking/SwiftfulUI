@@ -6,24 +6,24 @@
 //
 import SwiftUI
 
-extension View {
+public extension View {
 
-    public func any() -> AnyView {
+    func any() -> AnyView {
         AnyView(self)
     }
 
-    public func tappableBackground() -> some View {
+    func tappableBackground() -> some View {
         background(Color.black.opacity(0.001))
     }
 
-    public func removeListRowFormatting() -> some View {
+    func removeListRowFormatting() -> some View {
         self
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             .listRowBackground(Color.clear)
     }
 
     @ViewBuilder
-    public func ifSatisfiesCondition(_ condition: Bool, transform: (Self) -> some View) -> some View {
+    func ifSatisfiesCondition(_ condition: Bool, transform: (Self) -> some View) -> some View {
         if condition {
             transform(self)
         } else {
@@ -33,9 +33,9 @@ extension View {
 
 }
 
-extension View {
+public extension View {
 
-    public func callToActionButton(
+    func callToActionButton(
         font: Font = .headline,
         foregroundColor: Color = .white,
         backgroundColor: Color = .accentColor,
